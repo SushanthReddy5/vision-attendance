@@ -101,4 +101,5 @@ The frontend auto-detects the environment via [`config.js`](frontend/app/config.
 
 ## 📄 License
 
-MIT © 2026 Sushanth Reddy
+MIT © 2026 [Sushanth Reddy](https://github.com/SushanthReddy5)
+
