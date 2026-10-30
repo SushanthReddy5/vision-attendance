@@ -4,6 +4,9 @@
  * and returns realistic mock data so the demo looks fully functional.
  */
 
+// Auto-set login session — demo always starts logged in
+sessionStorage.setItem('va_logged_in', '1');
+
 const DEMO_STUDENTS = [
   { id:1, name:'Arjun Sharma',    roll_no:'CS21001', department:'Computer Science', section:'A', email:'arjun@college.edu',    phone:'9876543210', photo_path:null },
   { id:2, name:'Priya Reddy',     roll_no:'CS21002', department:'Computer Science', section:'A', email:'priya@college.edu',    phone:'9876543211', photo_path:null },
