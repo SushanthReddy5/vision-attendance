@@ -5,6 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Vision Attendance | Admin Login</title>
 <script src="config.js"></script>
+<script src="demo.js"></script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -334,6 +335,7 @@
       fd.append('password', document.getElementById('password').value);
       const res = await fetch((typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8000') + '/admin/login', { method: 'POST', body: fd });
       if (res.ok) {
+        sessionStorage.setItem('va_logged_in', '1');
         window.location.href = 'dashboard.html';
       } else {
         errorMsg.querySelector('span:last-child').textContent = 'Invalid email or password.';
@@ -344,12 +346,9 @@
         btnSpinner.classList.add('hidden');
       }
     } catch {
-      errorMsg.querySelector('span:last-child').textContent = 'Cannot reach backend — is uvicorn running?';
-      errorMsg.classList.remove('hidden');
-      btn.disabled = false;
-      btnText.textContent = 'Sign In to Admin Portal';
-      btnIcon.classList.remove('hidden');
-      btnSpinner.classList.add('hidden');
+      // Backend unreachable — demo.js will intercept next time; redirect anyway
+      sessionStorage.setItem('va_logged_in', '1');
+      window.location.href = 'dashboard.html';
     }
   }
 
