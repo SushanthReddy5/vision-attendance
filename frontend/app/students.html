@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vision Attendance | Students</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="config.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#1a58b7","primary-container": "#3d72d2","on-primary-container": "#fefcff",
+        "primary-fixed": "#d8e2ff","on-primary-fixed": "#001a43","surface": "#f9f9fa",
+        "surface-container-low": "#f3f3f4","surface-container": "#eeeeef",
+        "surface-container-high": "#e8e8e9","surface-container-highest": "#e2e2e3",
+        "card-bg": "#FFFFFF","on-surface": "#1a1c1d","on-surface-variant": "#424752",
+        "outline-variant": "#c3c6d4","on-background": "#1a1c1d",
+        "success-green": "#1E8E5A","error": "#ba1a1a","secondary": "#5f5e60",
+        "secondary-container": "#e5e1e4","on-secondary-container": "#656466",
+      },
+      spacing: { "margin-desktop": "64px","card-padding": "32px","gutter": "24px" },
+      fontFamily: {
+        "headline-sm": ["Playfair Display"],"body-md": ["Inter"],
+        "body-sm": ["Inter"],"label-caps": ["Inter"],
+      },
+      fontSize: {
+        "headline-sm": ["24px", {"lineHeight": "1.4"}],
+        "body-md": ["16px", {"lineHeight": "1.5"}],
+        "body-sm": ["14px", {"lineHeight": "1.5"}],
+        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+      }
+    }
+  }
+}
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.soft-shadow { box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.photo-thumb { width: 80px; height: 80px; border-radius: 10px; object-fit: cover; background: #eeeeef; border: 2px solid #c3c6d4; }
+.photo-slot-sm { width: 80px; height: 80px; border-radius: 10px; border: 2px dashed #c3c6d4; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: #f3f3f4; transition: border-color 0.2s, background 0.2s; flex-shrink: 0; position: relative; overflow: hidden; }
+.photo-slot-sm:hover { border-color: #1a58b7; background: rgba(26,88,183,0.04); }
+.photo-slot-sm img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photo-slot-sm.has-photo { border-color: #1E8E5A; border-style: solid; }
+</style>
+</head>
+<body class="font-body-md text-on-surface bg-surface">
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 flex flex-col bg-surface border-r border-outline-variant/50 shadow-md">
+  <div class="p-6 flex items-center gap-3">
+    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+      <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">visibility</span>
+    </div>
+    <div>
+      <h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Vision Attendance</h1>
+      <p class="text-[10px] text-on-surface-variant font-label-caps tracking-widest">ADMIN PORTAL</p>
+    </div>
+  </div>
+  <nav class="flex-1 mt-4 space-y-1">
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="dashboard.html">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="font-label-caps text-label-caps">DASHBOARD</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="capture.html">
+      <span class="material-symbols-outlined">videocam</span>
+      <span class="font-label-caps text-label-caps">LIVE CAPTURE</span>
+    </a>
+    <a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2" href="students.html">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+      <span class="font-label-caps text-label-caps">STUDENTS</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="reports.html">
+      <span class="material-symbols-outlined">assessment</span>
+      <span class="font-label-caps text-label-caps">REPORTS</span>
+    </a>
+  </nav>
+  <div class="px-4 mb-4">
+    <a href="register.html" class="w-full py-3 bg-on-background text-white rounded-full font-label-caps text-label-caps flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+      <span class="material-symbols-outlined text-sm">person_add</span>
+      New Student
+    </a>
+  </div>
+  <div class="border-t border-outline-variant/30 py-4">
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="login.html">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-body-sm text-body-sm">Logout</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="md:ml-64 min-h-screen px-4 md:px-margin-desktop py-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-caps text-[10px] uppercase tracking-wider mb-3">
+        <span class="material-symbols-outlined text-[14px]">group</span> Student Registry
+      </div>
+      <h1 class="text-[32px] text-on-background" style="font-family:'Playfair Display'">
+        All <span class="italic font-normal">Students</span>
+      </h1>
+    </div>
+    <a href="register.html" class="flex items-center gap-2 px-6 py-3 bg-on-background text-white rounded-full font-body-sm hover:opacity-90 transition-all">
+      <span class="material-symbols-outlined">person_add</span> Register New Student
+    </a>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-card-bg rounded-[20px] soft-shadow p-6 mb-6 flex flex-wrap gap-4 items-center">
+    <div class="flex items-center gap-2 flex-1 min-w-[200px]">
+      <span class="material-symbols-outlined text-on-surface-variant">search</span>
+      <input id="search-input" type="text" placeholder="Search by name, ID, or department..."
+        class="flex-1 bg-transparent outline-none text-body-md text-on-surface placeholder:text-on-surface-variant"/>
+    </div>
+    <div class="h-6 w-px bg-outline-variant/50 hidden md:block"></div>
+    <select id="dept-filter" class="px-4 py-2 bg-surface-container-low rounded-full text-body-sm text-on-surface border-none outline-none focus:ring-2 focus:ring-primary/20">
+      <option value="">All Departments</option>
+      <option>Engineering</option><option>Marketing</option>
+      <option>Operations</option><option>Faculty</option>
+    </select>
+    <select id="section-filter" class="px-4 py-2 bg-surface-container-low rounded-full text-body-sm text-on-surface border-none outline-none focus:ring-2 focus:ring-primary/20">
+      <option value="">All Sections</option>
+      <option>A</option><option>B</option><option>C</option><option>D</option>
+    </select>
+    <span id="student-count" class="text-on-surface-variant font-body-sm ml-auto">Loading...</span>
+  </div>
+
+  <!-- Students Table -->
+  <div class="bg-card-bg rounded-[20px] soft-shadow overflow-hidden">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="bg-surface-container-low border-b border-outline-variant/30">
+          <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Student</th>
+          <th class="px-4 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Roll No</th>
+          <th class="px-4 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Department</th>
+          <th class="px-4 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Section</th>
+          <th class="px-4 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Photos</th>
+          <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="students-tbody" class="divide-y divide-outline-variant/20">
+        <tr><td colspan="6" class="px-6 py-12 text-center text-on-surface-variant">Loading students...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<!-- ── EDIT MODAL ─────────────────────────────────────────────────────────── -->
+<div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm overflow-y-auto py-8">
+  <div class="bg-card-bg rounded-[24px] soft-shadow p-8 w-full max-w-2xl mx-4 my-auto">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-[24px]" style="font-family:'Playfair Display'">Edit <span class="italic">Student</span></h2>
+      <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <form id="edit-form" class="space-y-5">
+      <input type="hidden" id="edit-id"/>
+
+      <!-- Basic info -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-1 col-span-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Full Name</label>
+          <input id="edit-name" type="text" required class="w-full px-4 py-3 bg-surface-container-low rounded-lg text-body-md outline-none focus:ring-2 focus:ring-primary/20"/>
+        </div>
+        <div class="space-y-1">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Roll No / ID</label>
+          <input id="edit-roll" type="text" required class="w-full px-4 py-3 bg-surface-container-low rounded-lg text-body-md outline-none focus:ring-2 focus:ring-primary/20"/>
+        </div>
+        <div class="space-y-1">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Department</label>
+          <select id="edit-dept" class="w-full px-4 py-3 bg-surface-container-low rounded-lg text-body-md outline-none focus:ring-2 focus:ring-primary/20">
+            <option>Engineering</option><option>Marketing</option>
+            <option>Operations</option><option>Faculty</option>
+          </select>
+        </div>
+        <div class="space-y-1">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Section</label>
+          <select id="edit-section" class="w-full px-4 py-3 bg-surface-container-low rounded-lg text-body-md outline-none focus:ring-2 focus:ring-primary/20">
+            <option value="">— None —</option>
+            <option>A</option><option>B</option><option>C</option><option>D</option>
+          </select>
+        </div>
+        <div class="space-y-1">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Email</label>
+          <input id="edit-email" type="email" class="w-full px-4 py-3 bg-surface-container-low rounded-lg text-body-md outline-none focus:ring-2 focus:ring-primary/20"/>
+        </div>
+        <div class="space-y-1">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Phone</label>
+          <input id="edit-phone" type="tel" class="w-full px-4 py-3 bg-surface-container-low rounded-lg text-body-md outline-none focus:ring-2 focus:ring-primary/20"/>
+        </div>
+      </div>
+
+      <!-- Photos section -->
+      <div class="border-t border-outline-variant/30 pt-5">
+        <p class="font-label-caps text-label-caps text-on-surface-variant mb-3">PHOTOS — click any slot to replace (camera or file)</p>
+        <div class="flex gap-4 flex-wrap">
+          <!-- Front -->
+          <div class="flex flex-col items-center gap-1.5">
+            <div id="edit-slot-front" class="photo-slot-sm" title="Click to update front photo" onclick="triggerEditFile('front')">
+              <img id="edit-preview-front" src="" alt="" class="hidden"/>
+              <div id="edit-empty-front">
+                <span class="material-symbols-outlined text-on-surface-variant text-sm">add_a_photo</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold text-on-surface-variant">FRONT</span>
+            <input id="edit-file-front" type="file" accept="image/*" class="hidden" onchange="handleEditFile('front', this)"/>
+          </div>
+          <!-- Left -->
+          <div class="flex flex-col items-center gap-1.5">
+            <div id="edit-slot-left" class="photo-slot-sm" title="Click to update left tilt" onclick="triggerEditFile('left')">
+              <img id="edit-preview-left" src="" alt="" class="hidden"/>
+              <div id="edit-empty-left">
+                <span class="material-symbols-outlined text-on-surface-variant text-sm">add_a_photo</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold text-on-surface-variant">LEFT TILT</span>
+            <input id="edit-file-left" type="file" accept="image/*" class="hidden" onchange="handleEditFile('left', this)"/>
+          </div>
+          <!-- Right -->
+          <div class="flex flex-col items-center gap-1.5">
+            <div id="edit-slot-right" class="photo-slot-sm" title="Click to update right tilt" onclick="triggerEditFile('right')">
+              <img id="edit-preview-right" src="" alt="" class="hidden"/>
+              <div id="edit-empty-right">
+                <span class="material-symbols-outlined text-on-surface-variant text-sm">add_a_photo</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold text-on-surface-variant">RIGHT TILT</span>
+            <input id="edit-file-right" type="file" accept="image/*" class="hidden" onchange="handleEditFile('right', this)"/>
+          </div>
+          <div class="flex-1 min-w-[160px] flex items-center">
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Click any slot to upload a new photo. Only updated photos are re-processed — unmodified photos are preserved.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div id="edit-msg" class="hidden p-3 rounded-lg text-center text-sm font-bold"></div>
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closeModal()" class="flex-1 py-3 rounded-full border border-outline-variant text-on-surface font-bold hover:bg-surface-container transition-colors">Cancel</button>
+        <button type="submit" class="flex-1 py-3 rounded-full bg-on-background text-white font-bold hover:opacity-90 transition-all">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── DELETE CONFIRM MODAL ────────────────────────────────────────────────── -->
+<div id="delete-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+  <div class="bg-card-bg rounded-[24px] soft-shadow p-8 w-full max-w-sm mx-4 text-center">
+    <div class="w-14 h-14 rounded-full bg-error/10 flex items-center justify-center mx-auto mb-4">
+      <span class="material-symbols-outlined text-error text-2xl">delete_forever</span>
+    </div>
+    <h2 class="text-[20px] font-bold mb-2">Delete Student?</h2>
+    <p id="delete-msg" class="text-on-surface-variant text-body-sm mb-6"></p>
+    <div class="flex gap-3">
+      <button onclick="closeDeleteModal()" class="flex-1 py-3 rounded-full border border-outline-variant text-on-surface font-bold hover:bg-surface-container transition-colors">Cancel</button>
+      <button id="confirm-delete-btn" class="flex-1 py-3 rounded-full bg-error text-white font-bold hover:opacity-90 transition-all">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = (typeof API_BASE_URL !== 'undefined') ? API_BASE_URL : 'http://localhost:8000';
+let allStudents = [];
+let deleteTargetId = null;
+
+// Per-slot blobs for edit modal — independent state
+const editBlobs = { front: null, left: null, right: null };
+
+// ── Load students ────────────────────────────────────────────────────────────
+async function loadStudents() {
+  try {
+    const res = await fetch(`${API}/students`);
+    allStudents = await res.json();
+    renderTable(allStudents);
+  } catch (e) {
+    document.getElementById('students-tbody').innerHTML =
+      `<tr><td colspan="6" class="px-6 py-12 text-center text-error">
+        ⚠️ Cannot connect to backend. Is uvicorn running on port 8000?
+      </td></tr>`;
+  }
+}
+
+// ── Photo URL helper ─────────────────────────────────────────────────────────
+function photoUrl(path) {
+  if (!path) return null;
+  // path is e.g. "uploads/23EG110E22_front.jpg"
+  return `${API}/${path.replace(/\\/g, '/')}`;
+}
+
+// ── Render table ─────────────────────────────────────────────────────────────
+function renderTable(students) {
+  const tbody = document.getElementById('students-tbody');
+  document.getElementById('student-count').textContent = `${students.length} student${students.length !== 1 ? 's' : ''}`;
+
+  if (students.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-12 text-center text-on-surface-variant">No students found.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = students.map(s => {
+    const initials = s.name.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+    const frontUrl = photoUrl(s.photo_path);
+    const leftUrl  = photoUrl(s.photo_left_path);
+    const rightUrl = photoUrl(s.photo_right_path);
+
+    const avatarHtml = frontUrl
+      ? `<img src="${frontUrl}" alt="" class="w-10 h-10 rounded-full object-cover"/>`
+      : `<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-sm">${initials}</div>`;
+
+    const photoCount = [frontUrl, leftUrl, rightUrl].filter(Boolean).length;
+    const photoIndicator = `<span class="text-[10px] font-bold ${photoCount === 3 ? 'text-success-green' : photoCount > 0 ? 'text-primary' : 'text-on-surface-variant'}">${photoCount}/3 photos</span>`;
+
+    return `
+    <tr class="hover:bg-surface-container-low/50 transition-colors" data-id="${s.id}">
+      <td class="px-6 py-4">
+        <div class="flex items-center gap-3">
+          ${avatarHtml}
+          <p class="font-bold text-body-md">${s.name}</p>
+        </div>
+      </td>
+      <td class="px-4 py-4 text-body-sm text-on-surface-variant">${s.roll_no}</td>
+      <td class="px-4 py-4">
+        <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">${s.department || '—'}</span>
+      </td>
+      <td class="px-4 py-4 text-body-sm">${s.section || '—'}</td>
+      <td class="px-4 py-4">${photoIndicator}</td>
+      <td class="px-6 py-4 text-right">
+        <div class="flex items-center justify-end gap-2">
+          <button onclick="openEdit(${s.id})"
+            class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 transition-colors">
+            <span class="material-symbols-outlined text-[14px]">edit</span> Edit
+          </button>
+          <button onclick="openDelete(${s.id}, '${s.name.replace(/'/g,"\\'")}' )"
+            class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-error/10 text-error text-xs font-bold hover:bg-error/20 transition-colors">
+            <span class="material-symbols-outlined text-[14px]">delete</span> Delete
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Filters ──────────────────────────────────────────────────────────────────
+function applyFilters() {
+  const search  = document.getElementById('search-input').value.toLowerCase().trim();
+  const dept    = document.getElementById('dept-filter').value;
+  const section = document.getElementById('section-filter').value;
+
+  const filtered = allStudents.filter(s => {
+    const matchSearch  = !search  || s.name.toLowerCase().includes(search) || s.roll_no.toLowerCase().includes(search) || (s.department||'').toLowerCase().includes(search) || (s.email||'').toLowerCase().includes(search);
+    const matchDept    = !dept    || s.department === dept;
+    const matchSection = !section || s.section === section;
+    return matchSearch && matchDept && matchSection;
+  });
+  renderTable(filtered);
+}
+
+document.getElementById('search-input').addEventListener('input', applyFilters);
+document.getElementById('dept-filter').addEventListener('change', applyFilters);
+document.getElementById('section-filter').addEventListener('change', applyFilters);
+
+// ── Edit modal ────────────────────────────────────────────────────────────────
+function setEditPreview(slot, url) {
+  const preview = document.getElementById(`edit-preview-${slot}`);
+  const empty   = document.getElementById(`edit-empty-${slot}`);
+  const slotEl  = document.getElementById(`edit-slot-${slot}`);
+  if (url) {
+    preview.src = url;
+    preview.classList.remove('hidden');
+    empty.classList.add('hidden');
+    slotEl.classList.add('has-photo');
+  } else {
+    preview.classList.add('hidden');
+    empty.classList.remove('hidden');
+    slotEl.classList.remove('has-photo');
+  }
+}
+
+function openEdit(id) {
+  const s = allStudents.find(x => x.id === id);
+  if (!s) return;
+
+  document.getElementById('edit-id').value      = s.id;
+  document.getElementById('edit-name').value    = s.name;
+  document.getElementById('edit-roll').value    = s.roll_no;
+  document.getElementById('edit-dept').value    = s.department || 'Engineering';
+  document.getElementById('edit-section').value = s.section || '';
+  document.getElementById('edit-email').value   = s.email || '';
+  document.getElementById('edit-phone').value   = s.phone || '';
+  document.getElementById('edit-msg').className = 'hidden';
+
+  // Reset blobs — no new photos initially
+  editBlobs.front = null;
+  editBlobs.left  = null;
+  editBlobs.right = null;
+
+  // Show existing photos
+  setEditPreview('front', photoUrl(s.photo_path));
+  setEditPreview('left',  photoUrl(s.photo_left_path));
+  setEditPreview('right', photoUrl(s.photo_right_path));
+
+  document.getElementById('edit-modal').classList.replace('hidden', 'flex');
+}
+
+function closeModal() {
+  document.getElementById('edit-modal').classList.replace('flex', 'hidden');
+  // Reset file inputs
+  ['front','left','right'].forEach(slot => {
+    const fi = document.getElementById(`edit-file-${slot}`);
+    if (fi) fi.value = '';
+  });
+}
+
+function triggerEditFile(slot) {
+  document.getElementById(`edit-file-${slot}`).click();
+}
+
+function handleEditFile(slot, input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    alert('Please select a valid image file.');
+    input.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const dataURL = ev.target.result;
+    setEditPreview(slot, dataURL);
+    // Convert to blob
+    fetch(dataURL).then(r => r.blob()).then(blob => {
+      editBlobs[slot] = blob;
+    });
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+
+document.getElementById('edit-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id  = document.getElementById('edit-id').value;
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  const fd = new FormData();
+  fd.append('name',       document.getElementById('edit-name').value);
+  fd.append('roll_no',    document.getElementById('edit-roll').value);
+  fd.append('department', document.getElementById('edit-dept').value);
+  fd.append('section',    document.getElementById('edit-section').value);
+  fd.append('email',      document.getElementById('edit-email').value);
+  fd.append('phone',      document.getElementById('edit-phone').value);
+
+  // Only append photos that were actually changed
+  if (editBlobs.front) fd.append('photo',       editBlobs.front, 'front.jpg');
+  if (editBlobs.left)  fd.append('photo_left',  editBlobs.left,  'left.jpg');
+  if (editBlobs.right) fd.append('photo_right', editBlobs.right, 'right.jpg');
+
+  try {
+    const res  = await fetch(`${API}/students/${id}`, { method: 'PUT', body: fd });
+    const data = await res.json();
+    const msg  = document.getElementById('edit-msg');
+    if (res.ok) {
+      msg.className   = 'p-3 rounded-lg text-center text-sm font-bold bg-success-green/10 text-success-green';
+      msg.textContent = '✅ Saved successfully!';
+      setTimeout(() => { closeModal(); loadStudents(); }, 800);
+    } else {
+      msg.className   = 'p-3 rounded-lg text-center text-sm font-bold bg-error/10 text-error';
+      msg.textContent = data.detail || 'Update failed.';
+    }
+  } catch {
+    const msg = document.getElementById('edit-msg');
+    msg.className   = 'p-3 rounded-lg text-center text-sm font-bold bg-error/10 text-error';
+    msg.textContent = 'Network error.';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Save Changes';
+});
+
+// ── Delete modal ─────────────────────────────────────────────────────────────
+function openDelete(id, name) {
+  deleteTargetId = id;
+  document.getElementById('delete-msg').textContent =
+    `This will permanently delete "${name}" and all their attendance records. This cannot be undone.`;
+  document.getElementById('delete-modal').classList.replace('hidden', 'flex');
+}
+
+function closeDeleteModal() {
+  document.getElementById('delete-modal').classList.replace('flex', 'hidden');
+  deleteTargetId = null;
+}
+
+document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+  if (!deleteTargetId) return;
+  const btn = document.getElementById('confirm-delete-btn');
+  btn.disabled = true;
+  btn.textContent = 'Deleting...';
+  try {
+    const res = await fetch(`${API}/students/${deleteTargetId}`, { method: 'DELETE' });
+    if (res.ok) { closeDeleteModal(); loadStudents(); }
+    else {
+      const d = await res.json();
+      alert(d.detail || 'Delete failed.');
+    }
+  } catch {
+    alert('Network error — could not delete.');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Delete';
+});
+
+// Close modals on backdrop click
+document.getElementById('edit-modal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.getElementById('delete-modal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeDeleteModal();
+});
+
+loadStudents();
+</script>
+</body>
+</html>

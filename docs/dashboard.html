@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vision Attendance | Admin Dashboard</title>
+<script src="config.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#fefcff","error": "#ba1a1a","outline": "#737784",
+                        "primary": "#1a58b7","secondary-container": "#e5e1e4","primary-fixed": "#d8e2ff",
+                        "surface-container-lowest": "#ffffff","on-primary-fixed": "#001a43",
+                        "on-secondary": "#ffffff","on-primary": "#ffffff","success-green": "#1E8E5A",
+                        "on-background": "#1a1c1d","on-surface-variant": "#424752",
+                        "background": "#f9f9fa","surface": "#f9f9fa","surface-container-low": "#f3f3f4",
+                        "surface-bright": "#f9f9fa","surface-container-high": "#e8e8e9",
+                        "primary-fixed-dim": "#aec6ff","outline-variant": "#c3c6d4",
+                        "secondary-fixed": "#e5e1e4","card-bg": "#FFFFFF","on-surface": "#1a1c1d",
+                        "surface-variant": "#e2e2e3","secondary": "#5f5e60",
+                        "surface-container-highest": "#e2e2e3","primary-container": "#3d72d2",
+                        "tertiary": "#825100","error-container": "#ffdad6",
+                        "inverse-surface": "#2f3132","on-tertiary": "#ffffff",
+                        "surface-tint": "#1e5bba","on-secondary-container": "#656466",
+                        "surface-container": "#eeeeef"
+                    },
+                    "borderRadius": {"DEFAULT": "0.25rem","lg": "0.5rem","xl": "0.75rem","full": "9999px"},
+                    "spacing": {
+                        "container-max": "1280px","gutter": "24px","margin-desktop": "64px",
+                        "card-padding": "32px","margin-mobile": "20px","section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Playfair Display"],"headline-md": ["Playfair Display"],
+                        "headline-sm": ["Playfair Display"],"body-lg": ["Inter"],
+                        "body-sm": ["Inter"],"label-caps": ["Inter"],"body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+</script>
+<style>
+        body { background-color: #f9f9fa; color: #1a1c1d; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .card-shadow { box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+        .stat-icon-chip { width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#FFFFFF;box-shadow:0 4px 12px rgba(0,0,0,0.05); }
+        /* Search dropdown */
+        #search-dropdown { position:absolute;top:100%;left:0;right:0;z-index:100;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.12);border:1px solid #c3c6d4;max-height:360px;overflow-y:auto;margin-top:4px; }
+        /* Profile dropdown */
+        #profile-dropdown { position:absolute;top:calc(100% + 8px);right:0;z-index:200;background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.14);border:1px solid #c3c6d4;width:300px; }
+        /* Modal */
+        .modal-backdrop { position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center; }
+        .modal-card { background:#fff;border-radius:24px;box-shadow:0 16px 48px rgba(0,0,0,0.15);width:100%;max-width:480px;margin:16px;max-height:90vh;overflow-y:auto; }
+        .input-field { width:100%;padding:12px 16px;background:#f3f3f4;border:1.5px solid transparent;border-radius:10px;font-size:14px;color:#1a1c1d;transition:border-color 0.2s;outline:none; }
+        .input-field:focus { border-color:#1a58b7;background:#fff; }
+</style>
+</head>
+<body class="flex min-h-screen">
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 flex flex-col bg-surface border-r border-outline-variant/50 shadow-md">
+  <div class="p-6 flex items-center gap-3">
+    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+      <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">visibility</span>
+    </div>
+    <div>
+      <h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Vision Attendance</h1>
+      <p class="text-[10px] text-on-surface-variant font-label-caps tracking-widest">ADMIN PORTAL</p>
+    </div>
+  </div>
+  <nav class="flex-1 mt-4 space-y-1">
+    <a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2" href="dashboard.html">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+      <span class="font-label-caps text-label-caps">DASHBOARD</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="capture.html">
+      <span class="material-symbols-outlined">videocam</span>
+      <span class="font-label-caps text-label-caps">LIVE CAPTURE</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="students.html">
+      <span class="material-symbols-outlined">group</span>
+      <span class="font-label-caps text-label-caps">STUDENTS</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="reports.html">
+      <span class="material-symbols-outlined">assessment</span>
+      <span class="font-label-caps text-label-caps">REPORTS</span>
+    </a>
+  </nav>
+  <div class="px-4 mb-4">
+    <a href="register.html" class="w-full py-3 bg-on-background text-white rounded-full font-label-caps text-label-caps flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+      <span class="material-symbols-outlined text-sm">person_add</span>
+      New Student
+    </a>
+  </div>
+  <div class="border-t border-outline-variant/30 py-4">
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="login.html">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-body-sm text-body-sm">Logout</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 min-h-screen relative">
+
+<!-- Header -->
+<header class="sticky top-0 z-30 bg-surface/80 backdrop-blur-md px-margin-desktop h-20 flex justify-between items-center border-b border-outline-variant/30">
+  <div>
+    <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Attendance Dashboard</h2>
+    <p class="text-body-sm text-on-surface-variant">Real-time biometrics tracking &amp; monitoring</p>
+  </div>
+  <div class="flex items-center gap-6">
+    <!-- Search -->
+    <div class="relative group" id="search-wrapper">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+      <input id="search-input" class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-lg text-body-sm focus:ring-2 focus:ring-primary/20 w-64 transition-all" placeholder="Search students..." type="text" autocomplete="off"/>
+      <!-- Dropdown results -->
+      <div id="search-dropdown" class="hidden"></div>
+    </div>
+    <!-- Admin profile button -->
+    <div class="relative" id="profile-wrapper">
+      <button id="profile-btn" class="flex items-center gap-3 hover:opacity-80 transition-opacity" onclick="toggleProfileDropdown()">
+        <div class="text-right">
+          <p id="profile-name-header" class="text-body-sm font-bold">Admin</p>
+          <p id="profile-role-header" class="text-[10px] text-on-surface-variant">System Administrator</p>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center border-2 border-white shadow-sm">
+          <span id="profile-avatar-initial" class="material-symbols-outlined text-white text-sm" style="font-variation-settings:'FILL' 1;">person</span>
+        </div>
+      </button>
+      <!-- Profile dropdown -->
+      <div id="profile-dropdown" class="hidden">
+        <!-- Profile info header -->
+        <div class="p-5 border-b border-outline-variant/30">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-white" style="font-variation-settings:'FILL' 1;">person</span>
+            </div>
+            <div>
+              <p id="pd-name" class="font-bold text-body-md">—</p>
+              <p id="pd-role" class="text-[11px] text-on-surface-variant">—</p>
+            </div>
+          </div>
+          <p id="pd-email" class="text-[12px] text-on-surface-variant flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">mail</span> —
+          </p>
+          <p id="pd-username" class="text-[12px] text-on-surface-variant flex items-center gap-1 mt-1">
+            <span class="material-symbols-outlined text-[14px]">badge</span> @—
+          </p>
+          <p id="pd-since" class="text-[12px] text-on-surface-variant flex items-center gap-1 mt-1">
+            <span class="material-symbols-outlined text-[14px]">calendar_today</span> —
+          </p>
+        </div>
+        <!-- Actions -->
+        <div class="p-3 space-y-1">
+          <button onclick="openEditProfile()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-container-low transition-colors text-left">
+            <span class="material-symbols-outlined text-primary">manage_accounts</span>
+            <span class="text-body-sm font-medium">Edit Profile</span>
+          </button>
+          <button onclick="openChangePassword()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-container-low transition-colors text-left">
+            <span class="material-symbols-outlined text-on-surface-variant">lock_reset</span>
+            <span class="text-body-sm font-medium">Change Password</span>
+          </button>
+          <div class="border-t border-outline-variant/20 mt-1 pt-1"></div>
+          <a href="login.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-error/10 transition-colors text-left">
+            <span class="material-symbols-outlined text-error">logout</span>
+            <span class="text-body-sm font-medium text-error">Sign Out</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Dashboard Content -->
+<div class="p-margin-desktop space-y-10 max-w-container-max mx-auto">
+
+<!-- Stat Cards Row -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+  <div class="bg-card-bg card-shadow rounded-[24px] p-6 border border-[#E0E0E0]/30 transition-transform hover:-translate-y-1">
+    <div class="stat-icon-chip mb-4"><span class="material-symbols-outlined text-primary">groups</span></div>
+    <p class="text-on-surface-variant text-body-sm font-medium">Total Students</p>
+    <div class="flex items-baseline gap-2 mt-1">
+      <h3 id="stat-total-students" class="text-headline-md font-bold">...</h3>
+    </div>
+  </div>
+  <div class="bg-card-bg card-shadow rounded-[24px] p-6 border border-[#E0E0E0]/30 transition-transform hover:-translate-y-1">
+    <div class="stat-icon-chip mb-4"><span class="material-symbols-outlined text-success-green" style="font-variation-settings:'FILL' 1;">check_circle</span></div>
+    <p class="text-on-surface-variant text-body-sm font-medium">Present Today</p>
+    <div class="flex items-baseline gap-2 mt-1">
+      <h3 id="stat-present-today" class="text-headline-md font-bold">...</h3>
+    </div>
+  </div>
+  <div class="bg-card-bg card-shadow rounded-[24px] p-6 border border-[#E0E0E0]/30 transition-transform hover:-translate-y-1">
+    <div class="stat-icon-chip mb-4"><span class="material-symbols-outlined text-error" style="font-variation-settings:'FILL' 1;">cancel</span></div>
+    <p class="text-on-surface-variant text-body-sm font-medium">Absent Today</p>
+    <div class="flex items-baseline gap-2 mt-1">
+      <h3 id="stat-absent-today" class="text-headline-md font-bold">...</h3>
+    </div>
+  </div>
+  <div class="bg-card-bg card-shadow rounded-[24px] p-6 border border-[#E0E0E0]/30 transition-transform hover:-translate-y-1">
+    <div class="stat-icon-chip mb-4"><span class="material-symbols-outlined text-tertiary">trending_up</span></div>
+    <p class="text-on-surface-variant text-body-sm font-medium">Avg Attendance</p>
+    <div class="flex items-baseline gap-2 mt-1">
+      <h3 id="stat-avg-attendance" class="text-headline-md font-bold">...</h3>
+    </div>
+  </div>
+</section>
+
+<!-- Chart + Live Vision Engine -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+
+  <!-- Bar Chart -->
+  <div class="lg:col-span-8 bg-card-bg card-shadow rounded-[24px] p-8 border border-[#E0E0E0]/30">
+    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
+      <div>
+        <h4 class="font-headline-sm text-headline-sm font-bold">Weekly Attendance Rate</h4>
+        <p class="text-body-sm text-on-surface-variant mt-1">What <strong>% of enrolled students</strong> were present each of the last 7 days. Hover for exact count.</p>
+      </div>
+      <div class="flex items-center gap-3 text-[11px] text-on-surface-variant flex-shrink-0">
+        <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm bg-success-green inline-block"></span> ≥70%</div>
+        <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm bg-yellow-400 inline-block"></span> 40–69%</div>
+        <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm bg-error inline-block"></span> &lt;40%</div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="relative" style="height:240px">
+      <!-- Y-axis -->
+      <div class="absolute left-0 top-0 bottom-8 w-10 flex flex-col justify-between items-end pr-2">
+        <span class="text-[10px] text-on-surface-variant">100%</span>
+        <span class="text-[10px] text-on-surface-variant">75%</span>
+        <span class="text-[10px] text-on-surface-variant">50%</span>
+        <span class="text-[10px] text-on-surface-variant">25%</span>
+        <span class="text-[10px] text-on-surface-variant">0%</span>
+      </div>
+      <!-- Gridlines -->
+      <div class="absolute left-10 right-0 top-0 bottom-8 flex flex-col justify-between pointer-events-none">
+        <div class="w-full border-t border-outline-variant/30 border-dashed"></div>
+        <div class="w-full border-t border-outline-variant/20 border-dashed"></div>
+        <div class="w-full border-t border-outline-variant/20 border-dashed"></div>
+        <div class="w-full border-t border-outline-variant/20 border-dashed"></div>
+        <div class="w-full border-t border-outline-variant/30"></div>
+      </div>
+      <!-- Bars -->
+      <div id="trend-chart" class="absolute left-10 right-0 top-0 bottom-8 flex items-end gap-2 px-2">
+        <div class="flex-1 flex items-center justify-center text-on-surface-variant text-body-sm">Loading...</div>
+      </div>
+      <!-- X-axis labels -->
+      <div id="trend-xaxis" class="absolute left-10 right-0 bottom-0 h-8 flex items-end gap-2 px-2"></div>
+    </div>
+  </div>
+
+  <!-- Live Vision Engine Card -->
+  <div class="lg:col-span-4 bg-[#0E0E10] text-white card-shadow rounded-[24px] p-8 flex flex-col justify-between overflow-hidden relative">
+    <div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/20 blur-3xl rounded-full"></div>
+    <div class="z-10">
+      <!-- Engine status badge -->
+      <div id="engine-status-badge" class="inline-block px-3 py-1 bg-white/10 rounded-full mb-4">
+        <p id="engine-status-text" class="text-[10px] font-bold tracking-widest text-white/70 uppercase">Engine Stopped</p>
+      </div>
+      <h4 class="font-headline-sm text-headline-sm mb-1">Live Vision Engine</h4>
+      <p id="engine-desc" class="text-body-sm text-white/60">Start the engine to begin real-time face recognition and automatic attendance marking.</p>
+    </div>
+
+    <!-- Mini camera preview (shown when engine runs) -->
+    <div id="engine-camera-wrap" class="hidden z-10 my-4">
+      <video id="engine-video" autoplay playsinline muted class="w-full rounded-xl object-cover" style="max-height:120px;transform:scaleX(-1)"></video>
+      <div id="engine-match-badge" class="mt-2 px-3 py-1.5 bg-white/10 rounded-xl text-xs flex items-center gap-2 hidden">
+        <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1;">person_check</span>
+        <span id="engine-match-name">—</span>
+        <span id="engine-match-conf" class="ml-auto text-white/60">—</span>
+      </div>
+      <div id="engine-scanning" class="mt-2 px-3 py-1.5 bg-white/10 rounded-xl text-xs flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        <span class="text-white/60">Scanning for faces...</span>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="z-10 pt-4 space-y-3">
+      <button id="engine-start-btn" onclick="startEngine()"
+        class="w-full py-3 bg-primary rounded-full text-white font-label-caps text-label-caps flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">play_circle</span>
+        Start Engine
+      </button>
+      <button id="engine-stop-btn" onclick="stopEngine()"
+        class="hidden w-full py-3 bg-white/10 rounded-full text-white font-label-caps text-label-caps flex items-center justify-center gap-2 hover:bg-white/20 active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">stop_circle</span>
+        Stop Engine
+      </button>
+      <a href="capture.html" class="w-full py-2.5 border border-white/20 rounded-full text-white/70 font-label-caps text-label-caps flex items-center justify-center gap-2 hover:bg-white/5 transition-colors text-center">
+        <span class="material-symbols-outlined text-sm">open_in_new</span>
+        Full Capture Page
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Attendance Table -->
+<section class="bg-card-bg card-shadow rounded-[24px] border border-[#E0E0E0]/30 overflow-hidden">
+  <div class="p-8 border-b border-outline-variant/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h4 class="font-headline-sm text-headline-sm font-bold">Today's Attendance Roll</h4>
+      <p class="text-body-sm text-on-surface-variant">Real-time check-in records from the recognition engine</p>
+    </div>
+    <a href="capture.html" class="px-4 py-2 bg-primary text-white text-body-sm font-bold rounded-lg hover:opacity-90 transition-opacity">Open Capture →</a>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="bg-surface-container-low text-on-surface-variant uppercase text-[11px] font-bold tracking-widest">
+          <th class="px-8 py-4">Student Name</th>
+          <th class="px-8 py-4">Roll ID</th>
+          <th class="px-8 py-4">Department</th>
+          <th class="px-8 py-4">Status</th>
+          <th class="px-8 py-4">Time Checked-In</th>
+          <th class="px-8 py-4">Confidence %</th>
+        </tr>
+      </thead>
+      <tbody id="attendance-table-body" class="divide-y divide-outline-variant/20">
+        <tr><td colspan="6" class="px-8 py-5 text-center text-on-surface-variant">Loading attendance...</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="p-6 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center justify-between">
+    <p id="attendance-count-text" class="text-body-sm text-on-surface-variant">—</p>
+    <a href="capture.html" class="text-body-sm text-primary font-bold hover:underline">View Live Capture →</a>
+  </div>
+</section>
+
+</div><!-- /dashboard content -->
+</main><!-- /main -->
+
+<!-- ── EDIT PROFILE MODAL ──────────────────────────────────────────────────── -->
+<div id="edit-profile-modal" class="modal-backdrop hidden">
+  <div class="modal-card p-8">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-[22px] font-bold" style="font-family:'Playfair Display'">Edit <span class="italic font-normal">Profile</span></h2>
+      <button onclick="closeEditProfile()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form id="edit-profile-form" class="space-y-4">
+      <div>
+        <label class="font-label-caps text-label-caps text-on-surface-variant block mb-1.5">Full Name</label>
+        <input id="ep-name" type="text" required class="input-field"/>
+      </div>
+      <div>
+        <label class="font-label-caps text-label-caps text-on-surface-variant block mb-1.5">Username</label>
+        <input id="ep-username" type="text" required class="input-field"/>
+      </div>
+      <div>
+        <label class="font-label-caps text-label-caps text-on-surface-variant block mb-1.5">Email Address</label>
+        <input id="ep-email" type="email" required class="input-field"/>
+      </div>
+      <div id="ep-msg" class="hidden p-3 rounded-xl text-sm font-bold text-center"></div>
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closeEditProfile()" class="flex-1 py-3 rounded-full border border-outline-variant font-bold hover:bg-surface-container transition-colors">Cancel</button>
+        <button type="submit" id="ep-submit" class="flex-1 py-3 rounded-full bg-on-background text-white font-bold hover:opacity-90 transition-all">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── CHANGE PASSWORD MODAL ──────────────────────────────────────────────── -->
+<div id="change-pw-modal" class="modal-backdrop hidden">
+  <div class="modal-card p-8">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-[22px] font-bold" style="font-family:'Playfair Display'">Change <span class="italic font-normal">Password</span></h2>
+      <button onclick="closeChangePassword()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form id="change-pw-form" class="space-y-4">
+      <div>
+        <label class="font-label-caps text-label-caps text-on-surface-variant block mb-1.5">Current Password</label>
+        <input id="pw-current" type="password" required class="input-field" placeholder="••••••••"/>
+      </div>
+      <div>
+        <label class="font-label-caps text-label-caps text-on-surface-variant block mb-1.5">New Password</label>
+        <input id="pw-new" type="password" required minlength="6" class="input-field" placeholder="Min. 6 characters"/>
+      </div>
+      <div>
+        <label class="font-label-caps text-label-caps text-on-surface-variant block mb-1.5">Confirm New Password</label>
+        <input id="pw-confirm" type="password" required class="input-field" placeholder="Repeat new password"/>
+      </div>
+      <div id="pw-msg" class="hidden p-3 rounded-xl text-sm font-bold text-center"></div>
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closeChangePassword()" class="flex-1 py-3 rounded-full border border-outline-variant font-bold hover:bg-surface-container transition-colors">Cancel</button>
+        <button type="submit" id="pw-submit" class="flex-1 py-3 rounded-full bg-on-background text-white font-bold hover:opacity-90 transition-all">Change Password</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const API = (typeof API_BASE_URL !== 'undefined') ? API_BASE_URL : 'http://localhost:8000';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ADMIN PROFILE
+// ─────────────────────────────────────────────────────────────────────────────
+let adminProfile = null;
+
+async function loadAdminProfile() {
+  try {
+    const res = await fetch(`${API}/admin/profile`);
+    if (!res.ok) return;
+    adminProfile = await res.json();
+    // Update header
+    document.getElementById('profile-name-header').textContent = adminProfile.name;
+    document.getElementById('profile-role-header').textContent = adminProfile.role;
+    // Update dropdown
+    document.getElementById('pd-name').textContent    = adminProfile.name;
+    document.getElementById('pd-role').textContent    = adminProfile.role;
+    document.getElementById('pd-email').innerHTML     = `<span class="material-symbols-outlined text-[14px]">mail</span> ${adminProfile.email}`;
+    document.getElementById('pd-username').innerHTML  = `<span class="material-symbols-outlined text-[14px]">badge</span> @${adminProfile.username}`;
+    const since = adminProfile.created_at ? new Date(adminProfile.created_at).toLocaleDateString('en-IN', {year:'numeric',month:'short',day:'numeric'}) : '—';
+    document.getElementById('pd-since').innerHTML     = `<span class="material-symbols-outlined text-[14px]">calendar_today</span> Member since ${since}`;
+  } catch {}
+}
+
+function toggleProfileDropdown() {
+  const dd = document.getElementById('profile-dropdown');
+  dd.classList.toggle('hidden');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const wrapper = document.getElementById('profile-wrapper');
+  if (!wrapper.contains(e.target)) {
+    document.getElementById('profile-dropdown').classList.add('hidden');
+  }
+});
+
+// Edit profile modal
+function openEditProfile() {
+  document.getElementById('profile-dropdown').classList.add('hidden');
+  if (adminProfile) {
+    document.getElementById('ep-name').value     = adminProfile.name;
+    document.getElementById('ep-username').value = adminProfile.username;
+    document.getElementById('ep-email').value    = adminProfile.email;
+  }
+  document.getElementById('ep-msg').className = 'hidden';
+  document.getElementById('edit-profile-modal').classList.remove('hidden');
+}
+function closeEditProfile() {
+  document.getElementById('edit-profile-modal').classList.add('hidden');
+}
+
+document.getElementById('edit-profile-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('ep-submit');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  const fd = new FormData();
+  fd.append('name',     document.getElementById('ep-name').value.trim());
+  fd.append('username', document.getElementById('ep-username').value.trim());
+  fd.append('email',    document.getElementById('ep-email').value.trim());
+  try {
+    const res = await fetch(`${API}/admin/profile`, { method: 'PUT', body: fd });
+    const data = await res.json();
+    const msg = document.getElementById('ep-msg');
+    if (res.ok) {
+      msg.className = 'p-3 rounded-xl text-sm font-bold text-center bg-success-green/10 text-success-green border border-success-green/30';
+      msg.textContent = '✅ Profile updated successfully!';
+      msg.classList.remove('hidden');
+      await loadAdminProfile();
+      setTimeout(closeEditProfile, 1200);
+    } else {
+      msg.className = 'p-3 rounded-xl text-sm font-bold text-center bg-error/10 text-error border border-error/30';
+      msg.textContent = data.detail || 'Update failed.';
+      msg.classList.remove('hidden');
+    }
+  } catch {
+    showMsg('ep-msg', 'Network error.', 'error');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+// Change password modal
+function openChangePassword() {
+  document.getElementById('profile-dropdown').classList.add('hidden');
+  document.getElementById('pw-current').value = '';
+  document.getElementById('pw-new').value = '';
+  document.getElementById('pw-confirm').value = '';
+  document.getElementById('pw-msg').className = 'hidden';
+  document.getElementById('change-pw-modal').classList.remove('hidden');
+}
+function closeChangePassword() {
+  document.getElementById('change-pw-modal').classList.add('hidden');
+}
+
+document.getElementById('change-pw-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const newPw   = document.getElementById('pw-new').value;
+  const confirm = document.getElementById('pw-confirm').value;
+  const msg = document.getElementById('pw-msg');
+  if (newPw !== confirm) {
+    msg.className = 'p-3 rounded-xl text-sm font-bold text-center bg-error/10 text-error border border-error/30';
+    msg.textContent = 'New passwords do not match.';
+    msg.classList.remove('hidden');
+    return;
+  }
+  const btn = document.getElementById('pw-submit');
+  btn.disabled = true; btn.textContent = 'Changing...';
+  try {
+    const res = await fetch(`${API}/admin/change-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ current_password: document.getElementById('pw-current').value, new_password: newPw }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      msg.className = 'p-3 rounded-xl text-sm font-bold text-center bg-success-green/10 text-success-green border border-success-green/30';
+      msg.textContent = '✅ Password changed successfully!';
+      msg.classList.remove('hidden');
+      setTimeout(closeChangePassword, 1500);
+    } else {
+      msg.className = 'p-3 rounded-xl text-sm font-bold text-center bg-error/10 text-error border border-error/30';
+      msg.textContent = data.detail || 'Failed to change password.';
+      msg.classList.remove('hidden');
+    }
+  } catch {
+    msg.className = 'p-3 rounded-xl text-sm font-bold text-center bg-error/10 text-error border border-error/30';
+    msg.textContent = 'Network error.';
+    msg.classList.remove('hidden');
+  }
+  btn.disabled = false; btn.textContent = 'Change Password';
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STUDENT SEARCH
+// ─────────────────────────────────────────────────────────────────────────────
+let searchTimeout = null;
+
+document.getElementById('search-input').addEventListener('input', (e) => {
+  clearTimeout(searchTimeout);
+  const q = e.target.value.trim();
+  if (!q) { hideSearchDropdown(); return; }
+  searchTimeout = setTimeout(() => performSearch(q), 250);
+});
+
+document.getElementById('search-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') hideSearchDropdown();
+});
+
+document.addEventListener('click', (e) => {
+  if (!document.getElementById('search-wrapper').contains(e.target)) {
+    hideSearchDropdown();
+  }
+});
+
+async function performSearch(q) {
+  const dd = document.getElementById('search-dropdown');
+  dd.innerHTML = '<div class="px-4 py-3 text-on-surface-variant text-body-sm flex items-center gap-2"><svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Searching...</div>';
+  dd.classList.remove('hidden');
+
+  try {
+    const res = await fetch(`${API}/students/search?q=${encodeURIComponent(q)}`);
+    if (!res.ok) throw new Error('Search failed');
+    const results = await res.json();
+
+    if (results.length === 0) {
+      dd.innerHTML = `<div class="px-4 py-5 text-center text-on-surface-variant text-body-sm">
+        <span class="material-symbols-outlined block mx-auto mb-1 text-2xl">search_off</span>
+        No students found for "<strong>${escapeHtml(q)}</strong>"
+      </div>`;
+      return;
+    }
+
+    dd.innerHTML = `
+      <div class="px-4 py-2 border-b border-outline-variant/20 flex justify-between items-center">
+        <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">${results.length} result${results.length !== 1 ? 's' : ''}</span>
+        <a href="students.html" class="text-[11px] text-primary font-bold hover:underline">View All Students →</a>
+      </div>
+      ${results.map(s => {
+        const initials = s.name.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+        return `<a href="students.html" class="flex items-center gap-3 px-4 py-3 hover:bg-surface-container-low transition-colors block">
+          <div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">${initials}</div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-body-sm truncate">${escapeHtml(s.name)}</p>
+            <p class="text-[11px] text-on-surface-variant truncate">${escapeHtml(s.roll_no)} · ${escapeHtml(s.department || '—')}</p>
+          </div>
+          <span class="material-symbols-outlined text-on-surface-variant text-sm">arrow_forward_ios</span>
+        </a>`;
+      }).join('')}
+    `;
+  } catch (err) {
+    dd.innerHTML = `<div class="px-4 py-4 text-error text-body-sm">⚠️ Search error — is the backend running?</div>`;
+  }
+}
+
+function hideSearchDropdown() {
+  document.getElementById('search-dropdown').classList.add('hidden');
+}
+
+function escapeHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LIVE VISION ENGINE (Dashboard mini-engine)
+// ─────────────────────────────────────────────────────────────────────────────
+let engineStream = null;
+let engineInterval = null;
+let engineProcessing = false;
+
+function setEngineStatus(status, desc) {
+  const badge = document.getElementById('engine-status-badge');
+  const text  = document.getElementById('engine-status-text');
+  const descEl = document.getElementById('engine-desc');
+
+  const configs = {
+    stopped:      { color: 'bg-white/10', textColor: 'text-white/70', label: 'Engine Stopped' },
+    initializing: { color: 'bg-yellow-500/20', textColor: 'text-yellow-400', label: 'Initializing...' },
+    running:      { color: 'bg-success-green/20', textColor: 'text-green-400', label: 'Engine Running' },
+    error:        { color: 'bg-error/20', textColor: 'text-red-400', label: 'Engine Error' },
+  };
+  const cfg = configs[status] || configs.stopped;
+  badge.className = `inline-block px-3 py-1 ${cfg.color} rounded-full mb-4`;
+  text.className  = `text-[10px] font-bold tracking-widest ${cfg.textColor} uppercase`;
+  text.textContent = cfg.label;
+  if (desc) descEl.textContent = desc;
+}
+
+async function startEngine() {
+  setEngineStatus('initializing', 'Requesting camera access...');
+  document.getElementById('engine-start-btn').classList.add('hidden');
+
+  try {
+    engineStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+      audio: false
+    });
+    const video = document.getElementById('engine-video');
+    video.srcObject = engineStream;
+    await video.play();
+
+    document.getElementById('engine-camera-wrap').classList.remove('hidden');
+    document.getElementById('engine-stop-btn').classList.remove('hidden');
+    setEngineStatus('running', 'Scanning for registered faces and marking attendance.');
+
+    // Start recognition polling every 3 seconds
+    engineInterval = setInterval(engineProcessFrame, 3000);
+
+  } catch (err) {
+    const msg = err.name === 'NotAllowedError'
+      ? 'Camera permission denied. Allow camera access in browser settings.'
+      : err.name === 'NotFoundError'
+      ? 'No camera device found.'
+      : `Camera error: ${err.message}`;
+    setEngineStatus('error', msg);
+    document.getElementById('engine-start-btn').classList.remove('hidden');
+  }
+}
+
+function stopEngine() {
+  if (engineInterval) { clearInterval(engineInterval); engineInterval = null; }
+  if (engineStream) { engineStream.getTracks().forEach(t => t.stop()); engineStream = null; }
+
+  const video = document.getElementById('engine-video');
+  video.srcObject = null;
+  document.getElementById('engine-camera-wrap').classList.add('hidden');
+  document.getElementById('engine-stop-btn').classList.add('hidden');
+  document.getElementById('engine-start-btn').classList.remove('hidden');
+  document.getElementById('engine-match-badge').classList.add('hidden');
+  setEngineStatus('stopped', 'Start the engine to begin real-time face recognition and automatic attendance marking.');
+}
+
+async function engineProcessFrame() {
+  if (!engineStream || engineProcessing) return;
+  engineProcessing = true;
+  try {
+    const video = document.getElementById('engine-video');
+    if (video.readyState < 2) { engineProcessing = false; return; }
+
+    const canvas = document.createElement('canvas');
+    canvas.width  = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    // Draw un-mirrored for backend (CSS mirrors only)
+    ctx.translate(canvas.width, 0); ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0);
+
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+    const fd = new FormData();
+    fd.append('frame', blob, 'frame.jpg');
+
+    const res = await fetch(`${API}/recognize`, { method: 'POST', body: fd });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    const matchBadge = document.getElementById('engine-match-badge');
+    const scanBadge  = document.getElementById('engine-scanning');
+
+    if (data.matched) {
+      document.getElementById('engine-match-name').textContent = data.student.name;
+      document.getElementById('engine-match-conf').textContent = `${data.student.confidence}%`;
+      matchBadge.classList.remove('hidden');
+      scanBadge.classList.add('hidden');
+
+      // If newly marked, refresh attendance table
+      if (data.newly_marked) {
+        fetchAttendanceTable();
+        fetchStats();
+      }
+    } else {
+      matchBadge.classList.add('hidden');
+      scanBadge.classList.remove('hidden');
+      document.querySelector('#engine-scanning span:last-child').textContent =
+        data.message || 'Scanning for faces...';
+    }
+  } catch (err) {
+    console.error('Engine recognition error:', err);
+    setEngineStatus('error', `Recognition error: ${err.message}. Check backend.`);
+    stopEngine();
+  } finally {
+    engineProcessing = false;
+  }
+}
+
+// Stop engine on page unload
+window.addEventListener('beforeunload', stopEngine);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DASHBOARD DATA
+// ─────────────────────────────────────────────────────────────────────────────
+async function fetchStats() {
+  try {
+    const res = await fetch(`${API}/dashboard/stats`);
+    if (!res.ok) return;
+    const stats = await res.json();
+    document.getElementById('stat-total-students').textContent  = stats.total_students.toLocaleString();
+    document.getElementById('stat-present-today').textContent   = stats.present_today.toLocaleString();
+    document.getElementById('stat-absent-today').textContent    = stats.absent_today.toLocaleString();
+    document.getElementById('stat-avg-attendance').textContent  = `${stats.average_attendance_pct}%`;
+  } catch {}
+}
+
+async function fetchAttendanceTable() {
+  try {
+    const res = await fetch(`${API}/attendance/today`);
+    if (!res.ok) return;
+    const records = await res.json();
+    const tbody = document.getElementById('attendance-table-body');
+    const countEl = document.getElementById('attendance-count-text');
+
+    if (records.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="px-8 py-10 text-center text-on-surface-variant">No attendance records yet for today.</td></tr>`;
+      countEl.textContent = '0 records today';
+      return;
+    }
+
+    countEl.textContent = `${records.length} check-in${records.length !== 1 ? 's' : ''} today`;
+    tbody.innerHTML = records.map(r => {
+      const timeStr = new Date(r.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const conf = typeof r.confidence === 'number' ? r.confidence : 0;
+      const barColor = conf >= 80 ? 'bg-success-green' : 'bg-primary';
+      const initial  = (r.name || '?').charAt(0);
+      return `<tr class="hover:bg-surface-container-low transition-colors">
+        <td class="px-8 py-5">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">${initial}</div>
+            <div>
+              <p class="text-body-md font-bold">${escapeHtml(r.name)}</p>
+              <p class="text-[11px] text-on-surface-variant">${escapeHtml(r.department || '')}</p>
+            </div>
+          </div>
+        </td>
+        <td class="px-8 py-5 text-body-sm font-medium">${escapeHtml(r.roll_no)}</td>
+        <td class="px-8 py-5 text-body-sm">${escapeHtml(r.department || '—')}</td>
+        <td class="px-8 py-5"><span class="px-3 py-1 bg-success-green/10 text-success-green rounded-full text-[11px] font-bold uppercase">${escapeHtml(r.status)}</span></td>
+        <td class="px-8 py-5 text-body-sm text-on-surface-variant">${timeStr}</td>
+        <td class="px-8 py-5">
+          <div class="flex items-center gap-2">
+            <div class="w-12 h-1.5 bg-surface-container rounded-full overflow-hidden">
+              <div class="${barColor} h-full" style="width:${Math.min(conf,100)}%"></div>
+            </div>
+            <span class="text-body-sm font-bold">${conf.toFixed(1)}%</span>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  } catch {}
+}
+
+async function fetchTrendChart() {
+  try {
+    const res = await fetch(`${API}/reports/trend`);
+    if (!res.ok) return;
+    const data = await res.json();
+
+    const chartEl = document.getElementById('trend-chart');
+    const xaxisEl = document.getElementById('trend-xaxis');
+    chartEl.innerHTML = '';
+    xaxisEl.innerHTML = '';
+
+    const rows  = (data.trend || []).slice(-7);
+    const total = data.total_students || 1;
+
+    if (rows.length === 0) {
+      chartEl.innerHTML = '<div class="flex-1 flex flex-col items-center justify-center text-on-surface-variant text-body-sm gap-2"><span class="material-symbols-outlined text-3xl opacity-40">bar_chart</span>No attendance history yet.</div>';
+      return;
+    }
+
+    const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    rows.forEach(r => {
+      const pct = total > 0 ? Math.round((r.present_count / total) * 100) : 0;
+      const heightPct = Math.max(pct, 3);
+
+      let barColor = '#1E8E5A';
+      if (pct < 70) barColor = '#eab308';
+      if (pct < 40) barColor = '#ba1a1a';
+
+      const [year, month, day] = r.day.split('-');
+      const dateObj   = new Date(r.day);
+      const dayName   = dayNames[dateObj.getDay()];
+      const shortDate = `${parseInt(day)} ${monthNames[parseInt(month)-1]}`;
+      const tooltip   = `${r.present_count} of ${total} students (${pct}%)`;
+
+      // Bar
+      const bar = document.createElement('div');
+      bar.className = 'flex-1 group flex flex-col items-center justify-end h-full relative cursor-default';
+      bar.innerHTML = `
+        <span class="text-[10px] font-bold mb-0.5" style="color:${barColor}">${pct}%</span>
+        <div class="w-full rounded-t-md hover:brightness-110 transition-all relative"
+             style="height:${heightPct}%;background:${barColor};min-height:4px">
+          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded-lg text-white text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10"
+               style="background:#1a1c1d">${tooltip}</div>
+        </div>`;
+      chartEl.appendChild(bar);
+
+      // X-axis label
+      const lbl = document.createElement('div');
+      lbl.className = 'flex-1 text-center';
+      lbl.innerHTML = `<span class="text-[10px] font-bold text-on-surface-variant">${dayName}</span><span class="block text-[9px] text-on-surface-variant/60">${shortDate}</span>`;
+      xaxisEl.appendChild(lbl);
+    });
+  } catch {}
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  loadAdminProfile();
+  fetchStats();
+  fetchAttendanceTable();
+  fetchTrendChart();
+  // Auto-refresh attendance every 30 seconds
+  setInterval(() => { fetchAttendanceTable(); fetchStats(); }, 30000);
+});
+</script>
+</body></html>

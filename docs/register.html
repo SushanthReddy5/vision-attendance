@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vision Attendance | Register New Student</title>
+<script src="config.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a","outline": "#737784","primary": "#1a58b7",
+                    "secondary-container": "#e5e1e4","primary-fixed": "#d8e2ff",
+                    "surface-container-lowest": "#ffffff","on-primary-fixed": "#001a43",
+                    "on-secondary": "#ffffff","on-primary": "#ffffff",
+                    "success-green": "#1E8E5A","on-background": "#1a1c1d",
+                    "on-surface-variant": "#424752","background": "#f9f9fa",
+                    "on-primary-fixed-variant": "#004397","surface": "#f9f9fa",
+                    "surface-container-low": "#f3f3f4","surface-bright": "#f9f9fa",
+                    "surface-container-high": "#e8e8e9","primary-fixed-dim": "#aec6ff",
+                    "outline-variant": "#c3c6d4","secondary-fixed": "#e5e1e4",
+                    "card-bg": "#FFFFFF","on-surface": "#1a1c1d",
+                    "surface-variant": "#e2e2e3","secondary": "#5f5e60",
+                    "surface-container-highest": "#e2e2e3","primary-container": "#3d72d2",
+                    "on-primary-container": "#fefcff","error-container": "#ffdad6",
+                    "inverse-surface": "#2f3132","on-tertiary": "#ffffff",
+                    "surface-tint": "#1e5bba","on-secondary-container": "#656466",
+                    "surface-container": "#eeeeef"
+            },
+            "borderRadius": {"DEFAULT": "0.25rem","lg": "0.5rem","xl": "0.75rem","full": "9999px"},
+            "spacing": {
+                    "container-max": "1280px","gutter": "24px","margin-desktop": "64px",
+                    "card-padding": "32px","margin-mobile": "20px","section-gap": "120px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Playfair Display"],"headline-md": ["Playfair Display"],
+                    "headline-lg-mobile": ["Playfair Display"],"headline-sm": ["Playfair Display"],
+                    "body-lg": ["Inter"],"body-sm": ["Inter"],"label-caps": ["Inter"],
+                    "headline-xl": ["Playfair Display"],"body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .soft-shadow { box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+        .camera-overlay { background: linear-gradient(0deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 50%); }
+        body { background-color: #f9f9fa; }
+        .slot-active { border-color: #1a58b7 !important; background: rgba(26,88,183,0.05); }
+        .slot-captured { border-color: #1E8E5A !important; }
+    </style>
+</head>
+<body class="text-on-surface font-body-md text-body-md">
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 flex flex-col bg-surface border-r border-outline-variant/50 shadow-md">
+  <div class="p-6 flex items-center gap-3">
+    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+      <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">visibility</span>
+    </div>
+    <div>
+      <h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Vision Attendance</h1>
+      <p class="text-[10px] text-on-surface-variant font-label-caps tracking-widest">ADMIN PORTAL</p>
+    </div>
+  </div>
+  <nav class="flex-1 mt-4 space-y-1">
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="dashboard.html">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="font-label-caps text-label-caps">DASHBOARD</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="capture.html">
+      <span class="material-symbols-outlined">videocam</span>
+      <span class="font-label-caps text-label-caps">LIVE CAPTURE</span>
+    </a>
+    <a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2" href="students.html">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+      <span class="font-label-caps text-label-caps">STUDENTS</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="reports.html">
+      <span class="material-symbols-outlined">assessment</span>
+      <span class="font-label-caps text-label-caps">REPORTS</span>
+    </a>
+  </nav>
+  <div class="px-4 mb-4">
+    <a href="register.html" class="w-full py-3 bg-on-background text-white rounded-full font-label-caps text-label-caps flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+      <span class="material-symbols-outlined text-sm">person_add</span>
+      New Student
+    </a>
+  </div>
+  <div class="border-t border-outline-variant/30 py-4">
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="login.html">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-body-sm text-body-sm">Logout</span>
+    </a>
+  </div>
+</aside>
+
+<main class="ml-64 min-h-screen py-12 md:py-16 px-margin-mobile md:px-margin-desktop max-w-container-max">
+<div class="mb-10">
+  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-caps text-[10px] uppercase tracking-wider mb-3">
+    <span class="material-symbols-outlined text-[14px]">person_add</span> Register Student
+  </div>
+  <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg tracking-tight">
+    Add a New <span class="italic font-normal">Face Profile</span>
+  </h1>
+  <p class="text-on-surface-variant font-body-lg text-body-lg mt-2 max-w-lg">
+    Capture or upload the front angle (required), then left and right tilts for stronger recognition accuracy.
+  </p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+
+  <!-- ── LEFT: Camera + Photo Slots ─────────────────────────────── -->
+  <div class="lg:col-span-7 space-y-gutter flex flex-col items-center">
+
+    <!-- Camera Viewfinder -->
+    <div class="bg-card-bg rounded-[24px] soft-shadow overflow-hidden relative border border-outline-variant/30 w-full max-w-xl">
+      <div class="aspect-video bg-neutral-900 relative flex items-center justify-center">
+        <!-- Camera off state -->
+        <div id="cam-off" class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white z-10">
+          <span class="material-symbols-outlined text-6xl opacity-40">videocam_off</span>
+          <p class="font-label-caps text-[11px] opacity-40">CAMERA NOT STARTED</p>
+          <button id="start-cam-btn" class="px-6 py-2 bg-primary text-white rounded-full font-label-caps text-label-caps hover:bg-blue-700 transition-colors">
+            START CAMERA
+          </button>
+        </div>
+        <!-- Live video -->
+        <video id="reg-video" autoplay playsinline muted class="w-full h-full object-cover hidden" style="transform:scaleX(-1)"></video>
+        <canvas id="reg-canvas" class="hidden"></canvas>
+        <div class="absolute inset-0 camera-overlay pointer-events-none"></div>
+        <div class="absolute inset-0 border-[40px] border-black/10 flex items-center justify-center pointer-events-none">
+          <div class="w-64 h-64 border-2 border-dashed border-white/40 rounded-full"></div>
+        </div>
+        <!-- Status pill -->
+        <div id="cam-status-pill" class="absolute top-6 left-6 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-white">
+          <span id="cam-dot" class="w-2 h-2 rounded-full bg-neutral-500"></span>
+          <span id="cam-status-text" class="font-label-caps text-[10px]">CAMERA OFF</span>
+        </div>
+        <!-- Active slot indicator -->
+        <div id="active-slot-pill" class="absolute top-6 right-6 hidden bg-primary/90 backdrop-blur-md px-3 py-1.5 rounded-full text-white">
+          <span id="active-slot-label" class="font-label-caps text-[10px]">CAPTURING: FRONT</span>
+        </div>
+      </div>
+
+      <!-- Capture button -->
+      <div class="p-card-padding flex flex-col items-center gap-4">
+        <button id="capture-btn" class="w-20 h-20 rounded-full border-4 border-surface-container-high bg-on-background flex items-center justify-center text-white active:scale-95 transition-transform hover:bg-neutral-800 shadow-xl group">
+          <span class="material-symbols-outlined text-4xl group-hover:scale-110 transition-transform">photo_camera</span>
+        </button>
+        <p id="capture-hint" class="font-body-sm text-body-sm text-on-surface-variant text-center max-w-sm">
+          Click a slot below to select it, then press the camera button to capture that angle. Or click any slot to upload from file.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Photo Slots ── -->
+    <div class="grid grid-cols-3 gap-4 w-full max-w-xl">
+
+      <!-- FRONT slot -->
+      <div id="slot-front" data-slot="front" class="photo-slot aspect-square bg-card-bg rounded-2xl soft-shadow border-2 border-primary slot-active overflow-hidden relative flex flex-col items-center justify-center text-on-surface-variant gap-2 cursor-pointer select-none" title="Click to select front — then capture or upload">
+        <img id="preview-front" class="absolute inset-0 w-full h-full object-cover hidden" src="" alt="Front photo"/>
+        <div id="empty-front" class="flex flex-col items-center gap-2">
+          <span class="material-symbols-outlined">add_a_photo</span>
+          <span class="font-label-caps text-[10px]">FRONT ✱</span>
+        </div>
+        <div id="badge-front" class="absolute bottom-2 left-2 bg-primary text-white font-label-caps text-[8px] px-2 py-0.5 rounded-full hidden">FRONT</div>
+        <input id="file-front" type="file" accept="image/*" class="hidden"/>
+      </div>
+
+      <!-- LEFT slot -->
+      <div id="slot-left" data-slot="left" class="photo-slot aspect-square bg-surface-container-low rounded-2xl border border-dashed border-outline-variant overflow-hidden relative flex flex-col items-center justify-center text-on-surface-variant gap-2 hover:bg-surface-container-high transition-colors cursor-pointer select-none" title="Click to select left tilt — then capture or upload">
+        <img id="preview-left" class="absolute inset-0 w-full h-full object-cover hidden" src="" alt="Left tilt photo"/>
+        <div id="empty-left" class="flex flex-col items-center gap-2">
+          <span class="material-symbols-outlined">add_a_photo</span>
+          <span class="font-label-caps text-[10px]">LEFT TILT</span>
+        </div>
+        <div id="badge-left" class="absolute bottom-2 left-2 bg-success-green text-white font-label-caps text-[8px] px-2 py-0.5 rounded-full hidden">LEFT</div>
+        <input id="file-left" type="file" accept="image/*" class="hidden"/>
+      </div>
+
+      <!-- RIGHT slot -->
+      <div id="slot-right" data-slot="right" class="photo-slot aspect-square bg-surface-container-low rounded-2xl border border-dashed border-outline-variant overflow-hidden relative flex flex-col items-center justify-center text-on-surface-variant gap-2 hover:bg-surface-container-high transition-colors cursor-pointer select-none" title="Click to select right tilt — then capture or upload">
+        <img id="preview-right" class="absolute inset-0 w-full h-full object-cover hidden" src="" alt="Right tilt photo"/>
+        <div id="empty-right" class="flex flex-col items-center gap-2">
+          <span class="material-symbols-outlined">add_a_photo</span>
+          <span class="font-label-caps text-[10px]">RIGHT TILT</span>
+        </div>
+        <div id="badge-right" class="absolute bottom-2 left-2 bg-success-green text-white font-label-caps text-[8px] px-2 py-0.5 rounded-full hidden">RIGHT</div>
+        <input id="file-right" type="file" accept="image/*" class="hidden"/>
+      </div>
+    </div>
+
+    <!-- Upload-from-file hint -->
+    <p class="text-[11px] text-on-surface-variant text-center max-w-xs">
+      💡 No camera? Click any slot to upload an image file directly from your device.
+    </p>
+  </div>
+
+  <!-- ── RIGHT: Personal Information Form ─────────────────────────── -->
+  <div class="lg:col-span-5 w-full">
+    <div class="bg-card-bg rounded-[24px] soft-shadow p-card-padding border border-outline-variant/30">
+      <h3 class="font-headline-sm text-headline-sm mb-8">Personal Information</h3>
+
+      <!-- Message area -->
+      <div id="reg-msg" class="hidden p-4 rounded-xl text-center font-bold text-sm mb-6"></div>
+
+      <form id="reg-form" class="space-y-6">
+        <div class="space-y-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Full Name</label>
+          <input id="reg-name" required class="w-full px-4 py-3 bg-surface-container-low rounded-lg border-none focus:ring-2 focus:ring-primary/20 text-body-md transition-shadow" placeholder="e.g. Jonathan Ive" type="text"/>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label class="font-label-caps text-label-caps text-on-surface-variant">Student ID / Roll No. ✱</label>
+            <input id="reg-roll" required class="w-full px-4 py-3 bg-surface-container-low rounded-lg border-none focus:ring-2 focus:ring-primary/20 text-body-md transition-shadow" placeholder="23EG110E22" type="text"/>
+          </div>
+          <div class="space-y-2">
+            <label class="font-label-caps text-label-caps text-on-surface-variant">Department</label>
+            <select id="reg-dept" class="w-full px-4 py-3 bg-surface-container-low rounded-lg border-none focus:ring-2 focus:ring-primary/20 text-body-md transition-shadow appearance-none">
+              <option>Engineering</option>
+              <option>Marketing</option>
+              <option>Operations</option>
+              <option>Faculty</option>
+            </select>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Section</label>
+          <select id="reg-section" class="w-full px-4 py-3 bg-surface-container-low rounded-lg border-none focus:ring-2 focus:ring-primary/20 text-body-md transition-shadow appearance-none">
+            <option value="">— None —</option>
+            <option>A</option><option>B</option><option>C</option><option>D</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Email Address</label>
+          <input id="reg-email" class="w-full px-4 py-3 bg-surface-container-low rounded-lg border-none focus:ring-2 focus:ring-primary/20 text-body-md transition-shadow" placeholder="student@domain.com" type="email"/>
+        </div>
+        <div class="space-y-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">Phone Number</label>
+          <div class="flex gap-2">
+            <div class="px-4 py-3 bg-surface-container-low rounded-lg text-body-sm font-medium flex items-center">+91</div>
+            <input id="reg-phone" class="flex-1 px-4 py-3 bg-surface-container-low rounded-lg border-none focus:ring-2 focus:ring-primary/20 text-body-md transition-shadow" placeholder="00000 00000" type="tel"/>
+          </div>
+        </div>
+        <div class="bg-secondary-container/30 p-4 rounded-xl flex gap-4 items-start border border-secondary-container">
+          <span class="material-symbols-outlined text-secondary mt-0.5">verified_user</span>
+          <p class="font-body-sm text-body-sm text-on-secondary-container">
+            All biometric data is stored locally on this device's database. ✱ Required fields.
+          </p>
+        </div>
+        <div class="pt-4">
+          <button id="submit-btn" class="w-full py-5 bg-on-background text-white rounded-full font-bold text-lg active:scale-[0.98] transition-all hover:bg-neutral-800 shadow-lg flex items-center justify-center gap-2" type="submit">
+            Register Profile
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const API = (typeof API_BASE_URL !== 'undefined') ? API_BASE_URL : 'http://localhost:8000';
+
+  // ── State: one blob per slot, completely independent ──────────────────────
+  const state = { front: null, left: null, right: null };
+  let activeSlot = 'front';   // which slot camera captures into
+  let stream = null;
+
+  // ── DOM refs ─────────────────────────────────────────────────────────────
+  const video       = document.getElementById('reg-video');
+  const canvas      = document.getElementById('reg-canvas');
+  const camOff      = document.getElementById('cam-off');
+  const startCamBtn = document.getElementById('start-cam-btn');
+  const captureBtn  = document.getElementById('capture-btn');
+  const camDot      = document.getElementById('cam-dot');
+  const camStatus   = document.getElementById('cam-status-text');
+  const activeSlotPill  = document.getElementById('active-slot-pill');
+  const activeSlotLabel = document.getElementById('active-slot-label');
+  const msgEl       = document.getElementById('reg-msg');
+
+  const SLOT_IDS = ['front', 'left', 'right'];
+
+  function getSlotEl(slot)    { return document.getElementById(`slot-${slot}`); }
+  function getPreviewEl(slot) { return document.getElementById(`preview-${slot}`); }
+  function getEmptyEl(slot)   { return document.getElementById(`empty-${slot}`); }
+  function getBadgeEl(slot)   { return document.getElementById(`badge-${slot}`); }
+  function getFileEl(slot)    { return document.getElementById(`file-${slot}`); }
+
+  // ── Slot selection ────────────────────────────────────────────────────────
+  function selectSlot(slot) {
+    activeSlot = slot;
+    // Update pill
+    const labels = { front: 'FRONT (REQUIRED)', left: 'LEFT TILT', right: 'RIGHT TILT' };
+    activeSlotLabel.textContent = `CAPTURING: ${labels[slot]}`;
+    activeSlotPill.classList.toggle('hidden', !stream);
+
+    SLOT_IDS.forEach(s => {
+      const el = getSlotEl(s);
+      el.classList.remove('slot-active', 'ring-2', 'ring-primary', 'ring-offset-2');
+      if (s === slot) {
+        el.classList.add('slot-active', 'ring-2', 'ring-primary', 'ring-offset-2');
+      }
+    });
+  }
+
+  // ── Capture to a specific slot ────────────────────────────────────────────
+  function captureToSlot(slot, blob, dataURL) {
+    state[slot] = blob;
+
+    const preview = getPreviewEl(slot);
+    const empty   = getEmptyEl(slot);
+    const badge   = getBadgeEl(slot);
+    const slotEl  = getSlotEl(slot);
+
+    preview.src = dataURL;
+    preview.classList.remove('hidden');
+    empty.classList.add('hidden');
+    badge.classList.remove('hidden');
+    slotEl.classList.add('slot-captured');
+    slotEl.classList.remove('border-dashed', 'border-outline-variant', 'bg-surface-container-low');
+
+    showMsg(`${slot.charAt(0).toUpperCase() + slot.slice(1)} photo captured ✓`, 'success');
+  }
+
+  // ── Camera controls ───────────────────────────────────────────────────────
+  async function startCamera() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
+      video.srcObject = stream;
+      video.classList.remove('hidden');
+      camOff.classList.add('hidden');
+      camDot.classList.replace('bg-neutral-500', 'bg-success-green');
+      camDot.classList.add('animate-pulse');
+      camStatus.textContent = 'LIVE';
+      activeSlotPill.classList.remove('hidden');
+      selectSlot(activeSlot);
+    } catch (err) {
+      showMsg('Camera access denied. Please allow camera permission and reload.', 'error');
+    }
+  }
+  startCamBtn.addEventListener('click', startCamera);
+
+  // ── Flash effect ─────────────────────────────────────────────────────────
+  function flash() {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-white z-[100] pointer-events-none';
+    overlay.style.opacity = '0.8';
+    document.body.appendChild(overlay);
+    overlay.animate([{ opacity: 0.8 }, { opacity: 0 }], { duration: 250, easing: 'ease-out' });
+    setTimeout(() => overlay.remove(), 300);
+  }
+
+  // ── Capture button ────────────────────────────────────────────────────────
+  captureBtn.addEventListener('click', () => {
+    if (!stream) {
+      showMsg('Start the camera first before capturing.', 'error');
+      return;
+    }
+    flash();
+    canvas.width  = video.videoWidth;
+    canvas.height = video.videoHeight;
+    // Draw mirrored image (un-mirror for storage so face_recognition sees raw)
+    const ctx = canvas.getContext('2d');
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset
+
+    const dataURL = canvas.toDataURL('image/jpeg', 0.92);
+    const currentSlot = activeSlot; // capture which slot BEFORE async toBlob
+
+    canvas.toBlob((blob) => {
+      captureToSlot(currentSlot, blob, dataURL);
+    }, 'image/jpeg', 0.92);
+  });
+
+  // ── Slot clicks: select + support file upload ─────────────────────────────
+  SLOT_IDS.forEach(slot => {
+    const slotEl = getSlotEl(slot);
+    const fileEl = getFileEl(slot);
+
+    slotEl.addEventListener('click', (e) => {
+      if (e.target === fileEl) return; // let file input handle itself
+      selectSlot(slot);
+      // If camera is off, trigger file picker
+      if (!stream) {
+        fileEl.click();
+      }
+    });
+
+    fileEl.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showMsg('Please select a valid image file.', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataURL = ev.target.result;
+        // Convert DataURL → Blob
+        fetch(dataURL).then(r => r.blob()).then(blob => {
+          captureToSlot(slot, blob, dataURL);
+        });
+      };
+      reader.readAsDataURL(file);
+      // Reset so same file can be re-selected
+      e.target.value = '';
+    });
+  });
+
+  // ── Form submission ───────────────────────────────────────────────────────
+  document.getElementById('reg-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!state.front) {
+      showMsg('⚠️ Front photo is required. Please capture or upload it first.', 'error');
+      return;
+    }
+
+    const name = document.getElementById('reg-name').value.trim();
+    const roll = document.getElementById('reg-roll').value.trim();
+    if (!name || !roll) {
+      showMsg('Full Name and Student ID are required.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<svg class="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Registering...';
+
+    try {
+      const fd = new FormData();
+      fd.append('name',       name);
+      fd.append('roll_no',    roll);
+      fd.append('department', document.getElementById('reg-dept').value);
+      fd.append('section',    document.getElementById('reg-section').value);
+      fd.append('email',      document.getElementById('reg-email').value || '');
+      fd.append('phone',      document.getElementById('reg-phone').value || '');
+      fd.append('photo',      state.front,                'front.jpg');
+      if (state.left)  fd.append('photo_left',  state.left,  'left.jpg');
+      if (state.right) fd.append('photo_right', state.right, 'right.jpg');
+
+      const res  = await fetch(`${API}/students`, { method: 'POST', body: fd });
+      const data = await res.json();
+
+      if (res.ok) {
+        showMsg(`✅ Registered successfully (${data.angles_captured} angle(s) captured). Redirecting to Students…`, 'success');
+        stream?.getTracks().forEach(t => t.stop());
+        setTimeout(() => { window.location.href = 'students.html'; }, 1800);
+      } else {
+        showMsg(data.detail || 'Registration failed.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = 'Register Profile <span class="material-symbols-outlined">arrow_forward</span>';
+      }
+    } catch (err) {
+      showMsg('Network error — is the backend running on port 8000?', 'error');
+      btn.disabled = false;
+      btn.innerHTML = 'Register Profile <span class="material-symbols-outlined">arrow_forward</span>';
+    }
+  });
+
+  // ── Message helper ────────────────────────────────────────────────────────
+  function showMsg(text, type) {
+    msgEl.classList.remove('hidden');
+    msgEl.className = type === 'success'
+      ? 'p-4 rounded-xl text-center font-bold text-sm mb-6 bg-success-green/10 text-success-green border border-success-green/30'
+      : 'p-4 rounded-xl text-center font-bold text-sm mb-6 bg-error/10 text-error border border-error/30';
+    msgEl.textContent = text;
+  }
+
+  // Initial slot selection
+  selectSlot('front');
+});
+</script>
+</body></html>

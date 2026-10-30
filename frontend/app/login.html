@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vision Attendance | Admin Login</title>
+<script src="config.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed": "#2a1700",
+            "on-primary-container": "#fefcff",
+            "on-tertiary-fixed-variant": "#653e00",
+            "error": "#ba1a1a",
+            "outline": "#737784",
+            "primary": "#1a58b7",
+            "tertiary-fixed": "#ffddb8",
+            "secondary-container": "#e5e1e4",
+            "primary-fixed": "#d8e2ff",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#001a43",
+            "on-secondary": "#ffffff",
+            "on-primary": "#ffffff",
+            "success-green": "#1E8E5A",
+            "on-background": "#1a1c1d",
+            "on-secondary-fixed": "#1b1b1d",
+            "on-surface-variant": "#424752",
+            "pill-accent-light": "rgba(91,141,239,0.1)",
+            "on-secondary-fixed-variant": "#474649",
+            "background": "#f9f9fa",
+            "pill-accent-dark": "rgba(255,255,255,0.15)",
+            "gradient-start": "#5B8DEF",
+            "on-primary-fixed-variant": "#004397",
+            "surface": "#f9f9fa",
+            "surface-container-low": "#f3f3f4",
+            "surface-bright": "#f9f9fa",
+            "inverse-on-surface": "#f0f1f2",
+            "inverse-primary": "#aec6ff",
+            "surface-container-high": "#e8e8e9",
+            "primary-fixed-dim": "#aec6ff",
+            "outline-variant": "#c3c6d4",
+            "secondary-fixed": "#e5e1e4",
+            "card-bg": "#FFFFFF",
+            "on-surface": "#1a1c1d",
+            "tertiary-fixed-dim": "#ffb960",
+            "gradient-end": "#8FB8F5",
+            "on-error": "#ffffff",
+            "on-tertiary-container": "#fffbff",
+            "surface-variant": "#e2e2e3",
+            "secondary": "#5f5e60",
+            "secondary-fixed-dim": "#c8c6c8",
+            "surface-container-highest": "#e2e2e3",
+            "tertiary-container": "#a46700",
+            "primary-container": "#3d72d2",
+            "tertiary": "#825100",
+            "error-container": "#ffdad6",
+            "inverse-surface": "#2f3132",
+            "on-tertiary": "#ffffff",
+            "surface-dim": "#dadadb",
+            "surface-tint": "#1e5bba",
+            "on-secondary-container": "#656466",
+            "surface-container": "#eeeeef"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "container-max": "1280px",
+            "gutter": "24px",
+            "margin-desktop": "64px",
+            "card-padding": "32px",
+            "margin-mobile": "20px",
+            "section-gap": "120px"
+          },
+          "fontFamily": {
+            "headline-lg": ["Playfair Display"],
+            "headline-md": ["Playfair Display"],
+            "headline-lg-mobile": ["Playfair Display"],
+            "headline-sm": ["Playfair Display"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-caps": ["Inter"],
+            "headline-xl": ["Playfair Display"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+            "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+            "headline-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "400"}],
+            "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "400"}],
+            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+            "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+            "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+            "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body { background-color: #f9f9fa; color: #1a1c1d; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .hero-gradient {
+      background: linear-gradient(135deg, #1a58b7 0%, #3d72d2 40%, #5B8DEF 100%);
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+    }
+    .input-field {
+      width: 100%;
+      padding: 14px 16px;
+      background: #f3f3f4;
+      border: 1.5px solid transparent;
+      border-radius: 12px;
+      font-size: 16px;
+      color: #1a1c1d;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .input-field:focus {
+      border-color: #1a58b7;
+      box-shadow: 0 0 0 3px rgba(26,88,183,0.12);
+      background: #fff;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      background: #1a1c1d;
+      color: #fff;
+      border: none;
+      border-radius: 9999px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .login-btn:hover { opacity: 0.88; }
+    .login-btn:active { transform: scale(0.97); }
+    .float-badge {
+      animation: floatY 4s ease-in-out infinite;
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body class="font-body-md text-body-md min-h-screen flex">
+
+<!-- Left Branding Panel -->
+<div class="hidden lg:flex lg:w-1/2 hero-gradient flex-col justify-between p-16 relative overflow-hidden">
+  <!-- Background decorative circles -->
+  <div class="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full"></div>
+  <div class="absolute bottom-0 -left-16 w-72 h-72 bg-white/5 rounded-full"></div>
+
+  <!-- Logo -->
+  <div class="flex items-center gap-3 relative z-10">
+    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+      <span class="material-symbols-outlined text-white" style="font-variation-settings:'FILL' 1;">visibility</span>
+    </div>
+    <div>
+      <span class="font-headline-sm text-headline-sm font-bold text-white">Vision Attendance</span>
+      <p class="text-[10px] text-white/60 font-label-caps tracking-widest mt-0.5">ADMIN PORTAL</p>
+    </div>
+  </div>
+
+  <!-- Hero Text -->
+  <div class="relative z-10">
+    <div class="inline-flex items-center gap-2 bg-white/15 px-4 py-1.5 rounded-full mb-6">
+      <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings:'FILL' 1;">verified</span>
+      <span class="text-white font-label-caps text-label-caps tracking-widest">ADMIN PORTAL</span>
+    </div>
+    <h1 class="font-headline-lg text-headline-lg text-white leading-tight mb-4">
+      Intelligent<br/><span class="italic font-light">Attendance</span><br/>Management
+    </h1>
+    <p class="text-white/75 font-body-lg text-body-lg max-w-sm">
+      Real-time biometric tracking powered by computer vision — built for modern institutions.
+    </p>
+
+    <!-- Floating stat cards -->
+    <div class="mt-10 space-y-4">
+      <div class="float-badge bg-white/15 backdrop-blur border border-white/20 rounded-2xl p-5 flex items-center gap-4 max-w-xs">
+        <div class="w-10 h-10 bg-success-green rounded-full flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings:'FILL' 1;">person_check</span>
+        </div>
+        <div>
+          <p class="text-white font-bold text-xl">98.2%</p>
+          <p class="text-white/70 font-label-caps text-[10px] tracking-wider">RECOGNITION ACCURACY</p>
+        </div>
+      </div>
+      <div class="float-badge bg-white/15 backdrop-blur border border-white/20 rounded-2xl p-5 flex items-center gap-4 max-w-xs" style="animation-delay: -2s;">
+        <div class="w-10 h-10 bg-primary-fixed-dim rounded-full flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings:'FILL' 1;">group</span>
+        </div>
+        <div>
+          <p class="text-white font-bold text-xl">1,420</p>
+          <p class="text-white/70 font-label-caps text-[10px] tracking-wider">ACTIVE PROFILES</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-white/40 font-body-sm text-body-sm relative z-10">Vision Attendance System</p>
+</div>
+
+<!-- Right Login Panel -->
+<div class="flex-1 flex items-center justify-center p-8 lg:p-16 bg-background">
+  <div class="w-full max-w-md">
+    <!-- Mobile logo -->
+    <div class="flex lg:hidden items-center gap-2 mb-10">
+      <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings:'FILL' 1;">visibility</span>
+      </div>
+      <span class="font-headline-sm text-headline-sm font-bold text-on-surface">Vision Attendance</span>
+    </div>
+
+    <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-2">Welcome back</h2>
+    <p class="text-on-surface-variant font-body-md text-body-md mb-10">Sign in to your admin account to continue.</p>
+
+    <form id="login-form" class="space-y-5" onsubmit="handleLogin(event)">
+      <!-- Email -->
+      <div>
+        <label class="font-label-caps text-label-caps text-on-surface-variant block mb-2">EMAIL ADDRESS</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-[20px]">mail</span>
+          <input id="email" class="input-field pl-11" type="email" placeholder="admin@vision.local" required/>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant">PASSWORD</label>
+          <a href="#" class="font-body-sm text-body-sm text-primary hover:underline">Forgot password?</a>
+        </div>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-[20px]">lock</span>
+          <input id="password" class="input-field pl-11 pr-11" type="password" placeholder="••••••••" required/>
+          <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-on-surface-variant transition-colors">
+            <span id="eye-icon" class="material-symbols-outlined text-[20px]">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Remember me -->
+      <div class="flex items-center gap-3">
+        <input id="remember" type="checkbox" class="w-4 h-4 rounded text-primary border-outline-variant focus:ring-primary/30"/>
+        <label for="remember" class="font-body-sm text-body-sm text-on-surface-variant">Keep me signed in for 30 days</label>
+      </div>
+
+      <!-- Error message (hidden by default) -->
+      <div id="error-msg" class="hidden bg-error-container text-on-error-container px-4 py-3 rounded-xl font-body-sm text-body-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-sm">error</span>
+        <span>Invalid credentials. Please try again.</span>
+      </div>
+
+      <!-- Submit -->
+      <div class="pt-2">
+        <button id="submit-btn" type="submit" class="login-btn flex items-center justify-center gap-2">
+          <span id="btn-text">Sign In to Admin Portal</span>
+          <span id="btn-icon" class="material-symbols-outlined text-sm">arrow_forward</span>
+          <span id="btn-spinner" class="hidden">
+            <svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+          </span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Divider -->
+    <div class="my-8 flex items-center gap-4">
+      <div class="flex-1 h-px bg-outline-variant/50"></div>
+      <span class="font-label-caps text-label-caps text-on-surface-variant/60">OR</span>
+      <div class="flex-1 h-px bg-outline-variant/50"></div>
+    </div>
+
+    <!-- SSO / back link -->
+    <div class="text-center space-y-3">
+      <p class="font-body-sm text-body-sm text-on-surface-variant">
+        Not an admin? <a href="index.html" class="text-primary font-bold hover:underline">Back to Home</a>
+      </p>
+      <p class="font-body-sm text-body-sm text-on-surface-variant/60">
+        Secured with end-to-end encryption &amp; biometric 2FA
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function togglePassword() {
+    const input = document.getElementById('password');
+    const icon = document.getElementById('eye-icon');
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.textContent = 'visibility_off';
+    } else {
+      input.type = 'password';
+      icon.textContent = 'visibility';
+    }
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnIcon = document.getElementById('btn-icon');
+    const btnSpinner = document.getElementById('btn-spinner');
+    const errorMsg = document.getElementById('error-msg');
+
+    btn.disabled = true;
+    btnText.textContent = 'Signing in...';
+    btnIcon.classList.add('hidden');
+    btnSpinner.classList.remove('hidden');
+    errorMsg.classList.add('hidden');
+
+    try {
+      const fd = new FormData();
+      fd.append('email',    document.getElementById('email').value);
+      fd.append('password', document.getElementById('password').value);
+      const res = await fetch((typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8000') + '/admin/login', { method: 'POST', body: fd });
+      if (res.ok) {
+        window.location.href = 'dashboard.html';
+      } else {
+        errorMsg.querySelector('span:last-child').textContent = 'Invalid email or password.';
+        errorMsg.classList.remove('hidden');
+        btn.disabled = false;
+        btnText.textContent = 'Sign In to Admin Portal';
+        btnIcon.classList.remove('hidden');
+        btnSpinner.classList.add('hidden');
+      }
+    } catch {
+      errorMsg.querySelector('span:last-child').textContent = 'Cannot reach backend — is uvicorn running?';
+      errorMsg.classList.remove('hidden');
+      btn.disabled = false;
+      btnText.textContent = 'Sign In to Admin Portal';
+      btnIcon.classList.remove('hidden');
+      btnSpinner.classList.add('hidden');
+    }
+  }
+
+  // Micro-interactions
+  document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('mousedown', () => btn.classList.add('scale-[0.97]'));
+    btn.addEventListener('mouseup', () => btn.classList.remove('scale-[0.97]'));
+    btn.addEventListener('mouseleave', () => btn.classList.remove('scale-[0.97]'));
+  });
+</script>
+</body></html>

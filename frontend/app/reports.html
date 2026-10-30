@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vision Attendance | Reports & Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="config.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-primary-container": "#fefcff",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "error": "#ba1a1a",
+                    "outline": "#737784",
+                    "primary": "#1a58b7",
+                    "tertiary-fixed": "#ffddb8",
+                    "secondary-container": "#e5e1e4",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#001a43",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "success-green": "#1E8E5A",
+                    "on-background": "#1a1c1d",
+                    "on-secondary-fixed": "#1b1b1d",
+                    "on-surface-variant": "#424752",
+                    "pill-accent-light": "rgba(91,141,239,0.1)",
+                    "on-secondary-fixed-variant": "#474649",
+                    "background": "#f9f9fa",
+                    "pill-accent-dark": "rgba(255,255,255,0.15)",
+                    "gradient-start": "#5B8DEF",
+                    "on-primary-fixed-variant": "#004397",
+                    "surface": "#f9f9fa",
+                    "surface-container-low": "#f3f3f4",
+                    "surface-bright": "#f9f9fa",
+                    "inverse-on-surface": "#f0f1f2",
+                    "inverse-primary": "#aec6ff",
+                    "surface-container-high": "#e8e8e9",
+                    "primary-fixed-dim": "#aec6ff",
+                    "outline-variant": "#c3c6d4",
+                    "secondary-fixed": "#e5e1e4",
+                    "card-bg": "#FFFFFF",
+                    "on-surface": "#1a1c1d",
+                    "tertiary-fixed-dim": "#ffb960",
+                    "gradient-end": "#8FB8F5",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "surface-variant": "#e2e2e3",
+                    "secondary": "#5f5e60",
+                    "secondary-fixed-dim": "#c8c6c8",
+                    "surface-container-highest": "#e2e2e3",
+                    "tertiary-container": "#a46700",
+                    "primary-container": "#3d72d2",
+                    "tertiary": "#825100",
+                    "error-container": "#ffdad6",
+                    "inverse-surface": "#2f3132",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#dadadb",
+                    "surface-tint": "#1e5bba",
+                    "on-secondary-container": "#656466",
+                    "surface-container": "#eeeeef"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "gutter": "24px",
+                    "margin-desktop": "64px",
+                    "card-padding": "32px",
+                    "margin-mobile": "20px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"],
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "headline-sm": ["Playfair Display"],
+                    "body-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-xl": ["Playfair Display"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .stat-card-shadow {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+        body {
+            background-color: #f9f9fa;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 flex flex-col bg-surface border-r border-outline-variant/50 shadow-md">
+  <div class="p-6 flex items-center gap-3">
+    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+      <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">visibility</span>
+    </div>
+    <div>
+      <h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Vision Attendance</h1>
+      <p class="text-[10px] text-on-surface-variant font-label-caps tracking-widest">ADMIN PORTAL</p>
+    </div>
+  </div>
+  <nav class="flex-1 mt-4 space-y-1">
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="dashboard.html">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="font-label-caps text-label-caps">DASHBOARD</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="capture.html">
+      <span class="material-symbols-outlined">videocam</span>
+      <span class="font-label-caps text-label-caps">LIVE CAPTURE</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="students.html">
+      <span class="material-symbols-outlined">group</span>
+      <span class="font-label-caps text-label-caps">STUDENTS</span>
+    </a>
+    <a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2" href="reports.html">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assessment</span>
+      <span class="font-label-caps text-label-caps">REPORTS</span>
+    </a>
+  </nav>
+  <div class="px-4 mb-4">
+    <a href="register.html" class="w-full py-3 bg-on-background text-white rounded-full font-label-caps text-label-caps flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+      <span class="material-symbols-outlined text-sm">person_add</span>
+      New Student
+    </a>
+  </div>
+  <div class="border-t border-outline-variant/30 py-4">
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="login.html">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-body-sm text-body-sm">Logout</span>
+    </a>
+  </div>
+</aside>
+<main class="md:ml-64 min-h-screen px-4 md:px-margin-desktop py-8">
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-caps text-[10px] uppercase tracking-wider mb-4">
+<span class="material-symbols-outlined text-[14px]">analytics</span> System Insights
+                </div>
+<h1 class="font-headline-lg text-headline-lg text-on-background leading-tight">
+                    Attendance <span class="italic font-normal">Reports</span>
+</h1>
+<p class="text-on-surface-variant font-body-md mt-2 max-w-xl">
+                    Live attendance data pulled directly from the recognition database.
+                </p>
+</div>
+</header>
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-gutter">
+<div class="bg-card-bg p-card-padding rounded-[24px] stat-card-shadow flex flex-col gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-caps text-label-caps uppercase">Avg. Recognition Confidence</p>
+<div class="flex items-baseline gap-2 mt-1">
+<span id="stat-confidence" class="font-headline-md text-headline-md text-on-background">--</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm">Average match confidence across all recognized check-ins.</p>
+</div>
+<div class="bg-card-bg p-card-padding rounded-[24px] stat-card-shadow flex flex-col gap-4">
+<div class="w-10 h-10 rounded-full bg-error/10 text-error flex items-center justify-center">
+<span class="material-symbols-outlined">person_off</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-caps text-label-caps uppercase">Absence Rate Today</p>
+<div class="flex items-baseline gap-2 mt-1">
+<span id="stat-absence" class="font-headline-md text-headline-md text-on-background">--</span>
+</div>
+</div>
+<p id="stat-absence-detail" class="text-on-surface-variant font-body-sm text-body-sm">--</p>
+</div>
+<div class="bg-card-bg p-card-padding rounded-[24px] stat-card-shadow flex flex-col gap-4">
+<div class="w-10 h-10 rounded-full bg-success-green/10 text-success-green flex items-center justify-center">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-caps text-label-caps uppercase">Total Registered Students</p>
+<div class="flex items-baseline gap-2 mt-1">
+<span id="stat-total" class="font-headline-md text-headline-md text-on-background">--</span>
+</div>
+</div>
+<p id="stat-present-detail" class="text-on-surface-variant font-body-sm text-body-sm">--</p>
+</div>
+</section>
+<section class="mb-gutter">
+<div class="bg-card-bg p-card-padding rounded-[24px] stat-card-shadow">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+      <h3 class="font-headline-sm text-headline-sm text-on-background">Daily Attendance Rate</h3>
+      <p class="text-on-surface-variant font-body-sm text-body-sm mt-1">
+        What <strong>percentage of all enrolled students</strong> were present each day (last 30 days).
+        Hover over a bar to see the exact count.
+      </p>
+    </div>
+    <div class="flex items-center gap-4 text-[11px] text-on-surface-variant flex-shrink-0">
+      <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-success-green inline-block"></span> ≥ 70%</div>
+      <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-yellow-400 inline-block"></span> 40–69%</div>
+      <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-error inline-block"></span> &lt; 40%</div>
+    </div>
+  </div>
+
+  <!-- Chart container -->
+  <div id="trend-chart-wrap" class="relative w-full" style="height:320px">
+
+    <!-- Y-axis labels -->
+    <div class="absolute left-0 top-0 bottom-8 w-10 flex flex-col justify-between items-end pr-2">
+      <span class="text-[10px] text-on-surface-variant">100%</span>
+      <span class="text-[10px] text-on-surface-variant">75%</span>
+      <span class="text-[10px] text-on-surface-variant">50%</span>
+      <span class="text-[10px] text-on-surface-variant">25%</span>
+      <span class="text-[10px] text-on-surface-variant">0%</span>
+    </div>
+
+    <!-- Gridlines + bars -->
+    <div class="absolute left-10 right-0 top-0 bottom-8 flex flex-col justify-between">
+      <!-- Horizontal gridlines -->
+      <div class="w-full border-t border-outline-variant/30 border-dashed"></div>
+      <div class="w-full border-t border-outline-variant/20 border-dashed"></div>
+      <div class="w-full border-t border-outline-variant/20 border-dashed"></div>
+      <div class="w-full border-t border-outline-variant/20 border-dashed"></div>
+      <div class="w-full border-t border-outline-variant/30"></div>
+    </div>
+
+    <!-- Bars area -->
+    <div id="trend-bars" class="absolute left-10 right-0 top-0 bottom-8 flex items-end gap-1 px-1"></div>
+
+    <!-- X-axis baseline label -->
+    <div id="trend-xaxis" class="absolute left-10 right-0 bottom-0 h-8 flex items-end gap-1 px-1"></div>
+
+    <!-- Empty state -->
+    <div id="trend-empty" class="absolute inset-0 flex flex-col items-center justify-center text-on-surface-variant hidden">
+      <span class="material-symbols-outlined text-4xl mb-2 opacity-40">bar_chart</span>
+      <p class="text-body-sm">No attendance history yet. Start marking attendance to see the trend.</p>
+    </div>
+  </div>
+</div>
+</section>
+<section class="mb-section-gap">
+<div class="bg-card-bg p-card-padding rounded-[24px] stat-card-shadow">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-headline-sm text-headline-sm text-on-background">Attendance by Department</h3>
+</div>
+<div id="dept-list" class="space-y-6">
+</div>
+</div>
+</section>
+<section class="mb-section-gap">
+<div class="bg-card-bg rounded-[24px] stat-card-shadow overflow-hidden">
+<div class="p-card-padding flex items-center justify-between border-b border-outline-variant/30">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-background">Absentees Today</h3>
+<p class="text-on-surface-variant font-body-sm text-body-sm">Students not yet marked present today, ranked by past absences.</p>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-card-padding py-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Student</th>
+<th class="px-4 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Department</th>
+<th class="px-4 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase text-center">Past Absences</th>
+</tr>
+</thead>
+<tbody id="absentee-rows" class="divide-y divide-outline-variant/20">
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</main>
+<script>
+    const API_BASE = (typeof API_BASE_URL !== "undefined") ? API_BASE_URL : "http://localhost:8000";
+
+    document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mousedown', () => el.classList.add('scale-95', 'opacity-80'));
+        el.addEventListener('mouseup', () => el.classList.remove('scale-95', 'opacity-80'));
+        el.addEventListener('mouseleave', () => el.classList.remove('scale-95', 'opacity-80'));
+    });
+
+    function initials(name) {
+        return name.split(' ').map(p => p[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    async function loadStats() {
+        try {
+            const res = await fetch(`${API_BASE}/reports/stats`);
+            if (!res.ok) throw new Error(`Status ${res.status}`);
+            const data = await res.json();
+
+            document.getElementById('stat-confidence').textContent =
+                data.avg_confidence ? `${data.avg_confidence}%` : 'N/A';
+
+            document.getElementById('stat-absence').textContent = `${data.absence_rate}%`;
+            document.getElementById('stat-absence-detail').textContent =
+                `${data.absent_today} of ${data.total_students} students absent today.`;
+
+            document.getElementById('stat-total').textContent = data.total_students;
+            document.getElementById('stat-present-detail').textContent =
+                `${data.present_today} present today.`;
+
+            const deptList = document.getElementById('dept-list');
+            deptList.innerHTML = '';
+            if (data.by_department.length === 0) {
+                deptList.innerHTML = '<p class="text-on-surface-variant text-body-sm">No department data yet.</p>';
+            }
+            data.by_department.forEach(d => {
+                deptList.innerHTML += `
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-body-sm">
+                            <span class="font-bold">${d.department}</span>
+                            <span class="text-on-surface-variant">${d.pct}% (${d.present}/${d.total})</span>
+                        </div>
+                        <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+                            <div class="bg-primary h-full rounded-full" style="width:${d.pct}%"></div>
+                        </div>
+                    </div>`;
+            });
+
+            const rows = document.getElementById('absentee-rows');
+            rows.innerHTML = '';
+            if (data.absentees.length === 0) {
+                rows.innerHTML = '<tr><td class="px-card-padding py-6 text-on-surface-variant text-body-sm" colspan="3">No absentees — everyone is present today.</td></tr>';
+            }
+            data.absentees.forEach(a => {
+                rows.innerHTML += `
+                    <tr class="hover:bg-surface-container-low/50 transition-colors">
+                        <td class="px-card-padding py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-xs">${initials(a.name)}</div>
+                                <div>
+                                    <p class="font-bold text-body-md">${a.name}</p>
+                                    <p class="text-xs text-on-surface-variant">Roll: ${a.roll_no}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-body-sm">${a.department || 'Unassigned'}</td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="px-3 py-1 rounded-full bg-error/10 text-error font-bold text-xs">${a.absences}</span>
+                        </td>
+                    </tr>`;
+            });
+        } catch (err) {
+            console.error('Failed to load /reports/stats:', err);
+        }
+    }
+
+    async function loadTrend() {
+        try {
+            const res = await fetch(`${API_BASE}/reports/trend`);
+            if (!res.ok) throw new Error(`Status ${res.status}`);
+            const data = await res.json();
+
+            const barsEl  = document.getElementById('trend-bars');
+            const xaxisEl = document.getElementById('trend-xaxis');
+            const emptyEl = document.getElementById('trend-empty');
+            barsEl.innerHTML  = '';
+            xaxisEl.innerHTML = '';
+
+            if (!data.trend || data.trend.length === 0) {
+                emptyEl.classList.remove('hidden');
+                return;
+            }
+            emptyEl.classList.add('hidden');
+
+            const total = data.total_students || 1;
+            const records = data.trend;
+
+            records.forEach(d => {
+                // attendance rate as a percentage of enrolled students
+                const pct     = total > 0 ? Math.round((d.present_count / total) * 100) : 0;
+                const heightPct = Math.max(pct, 2);  // always show at least a sliver
+
+                // Colour by rate
+                let barColor = '#1E8E5A';  // green ≥ 70
+                if (pct < 70) barColor = '#eab308'; // amber 40-69
+                if (pct < 40) barColor = '#ba1a1a'; // red < 40
+
+                // Format date as "12 Oct"
+                const [year, month, day] = d.day.split('-');
+                const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                const dateLabel = `${parseInt(day)} ${monthNames[parseInt(month)-1]}`;
+
+                // Bar column
+                const barCol = document.createElement('div');
+                barCol.className = 'flex-1 flex flex-col items-center justify-end h-full relative group cursor-default min-w-0';
+
+                // Tooltip
+                const tooltip = `${d.present_count} of ${total} students (${pct}%)`;
+
+                barCol.innerHTML = `
+                  <span class="text-[10px] font-bold mb-0.5 transition-opacity"
+                        style="color:${barColor}">${pct}%</span>
+                  <div class="w-full rounded-t-md transition-all group-hover:brightness-110 relative"
+                       style="height:${heightPct}%;background:${barColor};min-height:4px"
+                       title="${dateLabel}: ${tooltip}">
+                    <!-- hover tooltip -->
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded-lg text-white text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10"
+                         style="background:#1a1c1d">
+                      ${tooltip}
+                    </div>
+                  </div>`;
+
+                barsEl.appendChild(barCol);
+
+                // X-axis label
+                const labelEl = document.createElement('div');
+                labelEl.className = 'flex-1 text-center min-w-0';
+                labelEl.innerHTML = `<span class="text-[9px] text-on-surface-variant" style="display:block;transform:rotate(-40deg);transform-origin:top left;margin-left:50%;white-space:nowrap">${dateLabel}</span>`;
+                xaxisEl.appendChild(labelEl);
+            });
+
+        } catch (err) {
+            console.error('Failed to load /reports/trend:', err);
+        }
+    }
+
+    loadStats();
+    loadTrend();
+</script>
+</body></html>

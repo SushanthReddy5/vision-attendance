@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vision Attendance | Smart Face Recognition</title>
+<script src="config.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Inter:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-error-container": "#93000a",
+                "on-tertiary-fixed": "#2a1700",
+                "on-primary-container": "#fefcff",
+                "on-tertiary-fixed-variant": "#653e00",
+                "error": "#ba1a1a",
+                "outline": "#737784",
+                "primary": "#1a58b7",
+                "tertiary-fixed": "#ffddb8",
+                "secondary-container": "#e5e1e4",
+                "primary-fixed": "#d8e2ff",
+                "surface-container-lowest": "#ffffff",
+                "on-primary-fixed": "#001a43",
+                "on-secondary": "#ffffff",
+                "on-primary": "#ffffff",
+                "success-green": "#1E8E5A",
+                "on-background": "#1a1c1d",
+                "on-secondary-fixed": "#1b1b1d",
+                "on-surface-variant": "#424752",
+                "pill-accent-light": "rgba(91,141,239,0.1)",
+                "on-secondary-fixed-variant": "#474649",
+                "background": "#f9f9fa",
+                "pill-accent-dark": "rgba(255,255,255,0.15)",
+                "gradient-start": "#5B8DEF",
+                "on-primary-fixed-variant": "#004397",
+                "surface": "#f9f9fa",
+                "surface-container-low": "#f3f3f4",
+                "surface-bright": "#f9f9fa",
+                "inverse-on-surface": "#f0f1f2",
+                "inverse-primary": "#aec6ff",
+                "surface-container-high": "#e8e8e9",
+                "primary-fixed-dim": "#aec6ff",
+                "outline-variant": "#c3c6d4",
+                "secondary-fixed": "#e5e1e4",
+                "card-bg": "#FFFFFF",
+                "on-surface": "#1a1c1d",
+                "tertiary-fixed-dim": "#ffb960",
+                "gradient-end": "#8FB8F5",
+                "on-error": "#ffffff",
+                "on-tertiary-container": "#fffbff",
+                "surface-variant": "#e2e2e3",
+                "secondary": "#5f5e60",
+                "secondary-fixed-dim": "#c8c6c8",
+                "surface-container-highest": "#e2e2e3",
+                "tertiary-container": "#a46700",
+                "primary-container": "#3d72d2",
+                "tertiary": "#825100",
+                "error-container": "#ffdad6",
+                "inverse-surface": "#2f3132",
+                "on-tertiary": "#ffffff",
+                "surface-dim": "#dadadb",
+                "surface-tint": "#1e5bba",
+                "on-secondary-container": "#656466",
+                "surface-container": "#eeeeef"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "container-max": "1280px",
+                "gutter": "24px",
+                "margin-desktop": "64px",
+                "card-padding": "32px",
+                "margin-mobile": "20px",
+                "section-gap": "120px"
+            },
+            "fontFamily": {
+                "headline-lg": ["Playfair Display"],
+                "headline-md": ["Playfair Display"],
+                "headline-lg-mobile": ["Playfair Display"],
+                "headline-sm": ["Playfair Display"],
+                "body-lg": ["Inter"],
+                "body-sm": ["Inter"],
+                "label-caps": ["Inter"],
+                "headline-xl": ["Playfair Display"],
+                "body-md": ["Inter"]
+            },
+            "fontSize": {
+                "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                "headline-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-gradient {
+            background: linear-gradient(180deg, #5B8DEF 0%, #8FB8F5 100%);
+        }
+        .stat-card-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .glass-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md docked full-width top-0 sticky z-50 border-b border-outline-variant/30 dark:border-outline/20">
+<div class="flex justify-between items-center px-margin-desktop h-20 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">visibility</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Vision Attendance</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-body-sm text-body-sm text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary transition-colors duration-200" href="#">Platform</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Solutions</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Resources</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Pricing</a>
+</div>
+<a href="login.html" class="bg-on-surface text-surface px-6 py-2 rounded-full font-bold scale-95 active:opacity-80 transition-all">Get Started</a>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex flex-col items-center justify-center overflow-hidden hero-gradient px-margin-mobile md:px-margin-desktop py-20 rounded-b-[40px]">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full object-cover mix-blend-overlay opacity-30" data-alt="A cinematic, wide-angle landscape of a modern corporate campus with glass buildings reflecting a vibrant blue sky filled with soft, white clouds. The lighting is high-key and optimistic, matching the brand's premium sky-blue color palette. Subtle digital network overlays shimmer in the atmosphere, representing invisible smart data layers in a clean, modern style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB62Pzzt5wan_8NCxhM2iY1uKrU-YVedut7vOfIVJ_PJcmWWYFlJChMBvaxUNaLYSeOSjmPtKMV8w23dgbCDGzgTKkZlzyCBZoa-Db0mqvjLypDloahllxjoIYQb2vJ4c030kAx1quYAxE59TdKmJXsmeeWVpCCFGbpQpgs5xbok09Nw8UojTUY2kX7LcPK9DKESNxhwXaJhi0R33h_u2dDaubuzDGtddyMNqYgMGkIBzdko9_VrSJtXcAk_FEXHluk-7egqLSIsUPW')"></div>
+</div>
+<div class="relative z-10 text-center max-w-4xl mx-auto">
+<div class="inline-flex items-center gap-2 glass-badge px-4 py-1.5 rounded-full mb-8">
+<span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="text-white font-label-caps text-label-caps tracking-widest">FROM STRATEGY TO SUCCESS</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-white mb-6 leading-tight">
+                    Mark Attendance with a Simple <span class="italic font-light">Glance</span>
+</h1>
+<p class="font-body-lg text-body-lg text-white/90 mb-10 max-w-2xl mx-auto">
+                    Seamlessly adapt to changing needs and scale your institution with AI-powered vision infrastructure, designed to support peak operational growth.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<a href="login.html" class="bg-on-surface text-surface px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform inline-block">Get Started</a>
+<a href="login.html" class="bg-white text-on-surface px-8 py-4 rounded-full font-bold text-lg hover:bg-surface-container-low transition-colors inline-block">Learn More</a>
+</div>
+</div>
+<!-- Floating Stat Cards -->
+<div class="hidden lg:block absolute left-[10%] top-1/2 stat-card-float" style="animation-delay: -1s;">
+<div class="bg-white/90 backdrop-blur p-6 rounded-[24px] shadow-2xl flex items-center gap-4 w-64 border border-white/40">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white">verified</span>
+</div>
+<div>
+<div class="text-on-surface font-bold text-2xl">98.2%</div>
+<div class="text-on-surface-variant font-label-caps text-label-caps">Accuracy Rate</div>
+</div>
+</div>
+</div>
+<div class="hidden lg:block absolute right-[10%] top-1/3 stat-card-float" style="animation-delay: -3s;">
+<div class="bg-white/90 backdrop-blur p-6 rounded-[24px] shadow-2xl flex items-center gap-4 w-64 border border-white/40">
+<div class="w-12 h-12 bg-success-green rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white">group</span>
+</div>
+<div>
+<div class="text-on-surface font-bold text-2xl">1,420</div>
+<div class="text-on-surface-variant font-label-caps text-label-caps">Active Students</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-section-gap px-margin-desktop max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4 italic">Unrivaled Intelligence</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mx-auto">Empowering your administration with cutting-edge SaaS analytics tailored for educational excellence.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Card 1 -->
+<div class="md:col-span-2 bg-white p-card-padding rounded-[24px] shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:shadow-xl transition-shadow border border-outline-variant/30 group">
+<div class="w-12 h-12 bg-pill-accent-light text-primary rounded-full flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">live_tv</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Real-time Detection</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 leading-relaxed">
+                        Instant biometric verification as users walk through entrances. No lines, no delays, just pure efficiency.
+                    </p>
+<div class="w-full h-48 rounded-xl bg-cover bg-center" data-alt="A sophisticated UI dashboard showing a live video feed of a bright modern office lobby. Subtle green bounding boxes highlight individuals' faces as they pass by, with digital data chips displaying names and verification status in a clean, minimalist overlay. High-key lighting, soft blue accents, professional tech aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCA_MJoOHXrDDVwn_OUVh-PhXd-w3RiOcoZZIDLNU-76eFpLiznC3Zmm6-RWtzlRg54JjhOv0yyvGlZiaE023jQRfikCb4fzbrYr7-QV3WuHfrqono6gv0FoyBePNlGmvqwLjLTOrCZVyQqq9GEl6sfwttKKsY_YS0Fy_K2jGhYYAXGM3Q9Fpyk8G709vJcPizEHLWBKWJj5n8IPw0lAHBN7mPkyJXP3p1CWr5RpDaNSWCxjB3esguoC2IJ7f_-C2awuqjzHcRoj_cm')"></div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white p-card-padding rounded-[24px] shadow-[0_8px_24px_rgba(0,0,0,0.06)] border border-outline-variant/30 flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 bg-pill-accent-light text-primary rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined">history_edu</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Auto Logging</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                            Every entry is recorded automatically in a centralized ledger with high-precision timestamps.
+                        </p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white p-card-padding rounded-[24px] shadow-[0_8px_24px_rgba(0,0,0,0.06)] border border-outline-variant/30 flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 bg-pill-accent-light text-primary rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined">face_retouching_natural</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Liveness Check</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                            Advanced anti-spoofing technology ensures that only real people can mark attendance.
+                        </p>
+</div>
+</div>
+<!-- Card 4 (Full Width Bottom) -->
+<div class="md:col-span-4 bg-primary text-white p-12 rounded-[24px] flex flex-col md:flex-row items-center justify-between gap-8 mt-4 overflow-hidden relative">
+<div class="absolute right-0 top-0 opacity-10 scale-150">
+<span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<div class="relative z-10 max-w-xl">
+<h3 class="font-headline-md text-headline-md mb-4 italic">Predictive Analytics</h3>
+<p class="font-body-md text-body-md text-primary-fixed leading-relaxed">
+                            Identify attendance patterns, predict absenteeism, and generate automated compliance reports with a single click. Our AI looks beyond the present to help you plan for the future.
+                        </p>
+</div>
+<button class="relative z-10 bg-white text-primary px-10 py-4 rounded-full font-bold text-lg hover:bg-surface-container-lowest transition-colors whitespace-nowrap">View Case Studies</button>
+</div>
+</div>
+</section>
+<!-- Newsletter CTA Band -->
+<section class="bg-on-surface py-20 px-margin-desktop">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+<div class="max-w-md">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-3xl">visibility</span>
+<span class="font-headline-sm text-headline-sm font-bold text-white italic">VisionAttend</span>
+</div>
+<p class="font-body-lg text-body-lg text-surface-variant">Stay updated with the latest in vision-based institutional intelligence.</p>
+</div>
+<div class="w-full max-w-xl bg-surface-container-highest/10 p-2 rounded-full flex border border-outline-variant/20">
+<input class="bg-transparent border-none focus:ring-0 text-white font-body-md px-6 flex-grow placeholder:text-outline-variant" placeholder="Enter your business email" type="email"/>
+<button class="bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-primary-container transition-colors">Subscribe</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface dark:bg-surface-container-lowest border-t border-outline-variant/30 py-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop max-w-container-max mx-auto relative overflow-hidden">
+<!-- Large Faded Wordmark -->
+<div class="absolute -bottom-10 -right-20 pointer-events-none select-none opacity-[0.03] rotate-[-5deg] scale-150">
+<span class="font-headline-xl text-[240px] italic">VisionAttend</span>
+</div>
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">visibility</span>
+<span class="font-headline-md text-headline-md font-bold text-on-surface">Vision Attendance</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+  AI-powered face recognition attendance for modern institutions. All data stays on your own device.
+</p>
+<div class="flex gap-4">
+  <a href="login.html" class="px-5 py-2 rounded-full bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity">Open Admin Portal</a>
+</div>
+</div>
+<div class="ml-auto text-right">
+  <p class="font-body-sm text-body-sm text-on-surface-variant">&copy; 2026 Vision Attendance System</p>
+  <p class="text-[11px] text-on-surface-variant/60 mt-1">Built with FastAPI &amp; face_recognition</p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for navigation scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-sm');
+                nav.classList.remove('border-transparent');
+            } else {
+                nav.classList.remove('shadow-sm');
+            }
+        });
+
+        // Simple parallax effect for stat cards
+        window.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.stat-card-float');
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            
+            cards.forEach(card => {
+                card.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body></html>

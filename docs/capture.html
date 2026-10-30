@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vision Attendance | Live Capture</title>
+<script src="config.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed": "#2a1700",
+            "on-primary-container": "#fefcff",
+            "on-tertiary-fixed-variant": "#653e00",
+            "error": "#ba1a1a",
+            "outline": "#737784",
+            "primary": "#1a58b7",
+            "tertiary-fixed": "#ffddb8",
+            "secondary-container": "#e5e1e4",
+            "primary-fixed": "#d8e2ff",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#001a43",
+            "on-secondary": "#ffffff",
+            "on-primary": "#ffffff",
+            "success-green": "#1E8E5A",
+            "on-background": "#1a1c1d",
+            "on-secondary-fixed": "#1b1b1d",
+            "on-surface-variant": "#424752",
+            "pill-accent-light": "rgba(91,141,239,0.1)",
+            "on-secondary-fixed-variant": "#474649",
+            "background": "#f9f9fa",
+            "pill-accent-dark": "rgba(255,255,255,0.15)",
+            "gradient-start": "#5B8DEF",
+            "on-primary-fixed-variant": "#004397",
+            "surface": "#f9f9fa",
+            "surface-container-low": "#f3f3f4",
+            "surface-bright": "#f9f9fa",
+            "inverse-on-surface": "#f0f1f2",
+            "inverse-primary": "#aec6ff",
+            "surface-container-high": "#e8e8e9",
+            "primary-fixed-dim": "#aec6ff",
+            "outline-variant": "#c3c6d4",
+            "secondary-fixed": "#e5e1e4",
+            "card-bg": "#FFFFFF",
+            "on-surface": "#1a1c1d",
+            "tertiary-fixed-dim": "#ffb960",
+            "gradient-end": "#8FB8F5",
+            "on-error": "#ffffff",
+            "on-tertiary-container": "#fffbff",
+            "surface-variant": "#e2e2e3",
+            "secondary": "#5f5e60",
+            "secondary-fixed-dim": "#c8c6c8",
+            "surface-container-highest": "#e2e2e3",
+            "tertiary-container": "#a46700",
+            "primary-container": "#3d72d2",
+            "tertiary": "#825100",
+            "error-container": "#ffdad6",
+            "inverse-surface": "#2f3132",
+            "on-tertiary": "#ffffff",
+            "surface-dim": "#dadadb",
+            "surface-tint": "#1e5bba",
+            "on-secondary-container": "#656466",
+            "surface-container": "#eeeeef"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "container-max": "1280px",
+            "gutter": "24px",
+            "margin-desktop": "64px",
+            "card-padding": "32px",
+            "margin-mobile": "20px",
+            "section-gap": "120px"
+          },
+          "fontFamily": {
+            "headline-lg": ["Playfair Display"],
+            "headline-md": ["Playfair Display"],
+            "headline-lg-mobile": ["Playfair Display"],
+            "headline-sm": ["Playfair Display"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-caps": ["Inter"],
+            "headline-xl": ["Playfair Display"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+            "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+            "headline-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "400"}],
+            "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "400"}],
+            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+            "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+            "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+            "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body { background-color: #f9f9fa; color: #1a1c1d; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .face-scanner-box {
+      border: 2px solid #3d72d2;
+      box-shadow: 0 0 15px rgba(61, 114, 210, 0.4);
+    }
+    .custom-shadow { shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .glass-pill { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(8px); }
+    .live-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 flex flex-col bg-surface border-r border-outline-variant/50 shadow-md">
+  <div class="p-6 flex items-center gap-3">
+    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+      <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">visibility</span>
+    </div>
+    <div>
+      <h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Vision Attendance</h1>
+      <p class="text-[10px] text-on-surface-variant font-label-caps tracking-widest">ADMIN PORTAL</p>
+    </div>
+  </div>
+  <nav class="flex-1 mt-4 space-y-1">
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="dashboard.html">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="font-label-caps text-label-caps">DASHBOARD</span>
+    </a>
+    <a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2" href="capture.html">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">videocam</span>
+      <span class="font-label-caps text-label-caps">LIVE CAPTURE</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="students.html">
+      <span class="material-symbols-outlined">group</span>
+      <span class="font-label-caps text-label-caps">STUDENTS</span>
+    </a>
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="reports.html">
+      <span class="material-symbols-outlined">assessment</span>
+      <span class="font-label-caps text-label-caps">REPORTS</span>
+    </a>
+  </nav>
+  <div class="px-4 mb-4">
+    <a href="register.html" class="w-full py-3 bg-on-background text-white rounded-full font-label-caps text-label-caps flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+      <span class="material-symbols-outlined text-sm">person_add</span>
+      New Student
+    </a>
+  </div>
+  <div class="border-t border-outline-variant/30 py-4">
+    <a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 mx-2 hover:bg-surface-container-high rounded-lg transition-all duration-200" href="login.html">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-body-sm text-body-sm">Logout</span>
+    </a>
+  </div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 h-screen flex flex-col relative overflow-hidden">
+<!-- Contextual Top Bar -->
+<header class="h-20 px-8 flex items-center justify-between bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 z-30">
+<div class="flex items-center gap-4">
+<div id="cam-status-pill" class="bg-error/20 text-error px-4 py-1.5 rounded-full flex items-center gap-2 border border-error/20">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span id="cam-status-label" class="font-label-caps text-[11px]">CAMERA: OFF</span>
+</div>
+</div>
+</header>
+<div class="flex-1 flex p-8 gap-8 overflow-hidden">
+<!-- Video Feed Container -->
+<section class="flex-1 flex flex-col gap-6">
+<div id="camera-viewport" class="relative flex-1 bg-on-background rounded-[32px] overflow-hidden shadow-2xl group border-4 border-white">
+
+  <!-- ── CAMERA-OFF PLACEHOLDER (shown when stream is inactive) ── -->
+  <div id="camera-off-state" class="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-on-background z-10">
+    <div class="w-20 h-20 rounded-full bg-white/5 border-2 border-white/10 flex items-center justify-center">
+      <span class="material-symbols-outlined text-white/30 text-5xl">videocam_off</span>
+    </div>
+    <div class="text-center">
+      <p class="text-white/60 font-label-caps text-label-caps tracking-widest">CAMERA INACTIVE</p>
+      <p class="text-white/30 font-body-sm text-body-sm mt-1">Press Start Camera to begin</p>
+    </div>
+    <button id="start-btn-center"
+      class="flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-white font-label-caps text-label-caps shadow-lg hover:opacity-90 active:scale-95 transition-all">
+      <span class="material-symbols-outlined text-sm">play_circle</span>
+      START CAMERA
+    </button>
+  </div>
+
+  <!-- ── LIVE WEBCAM VIDEO (hidden until stream starts) ── -->
+  <!-- NOTE: mirror-transform applied in CSS; your backend will receive raw frames from the stream object -->
+  <video id="webcam-video"
+    class="absolute inset-0 w-full h-full object-cover hidden"
+    autoplay playsinline muted></video>
+
+  <!-- ── AI OVERLAYS (kept exactly as designed; wire to backend later) ── -->
+  <div id="ai-overlays" class="absolute inset-0 pointer-events-none hidden">
+
+    <!-- Detection Bounding Box -->
+    <div class="absolute top-[35%] left-[42%] w-48 h-64 face-scanner-box rounded-xl">
+      <div class="absolute -top-12 left-0 right-0 flex justify-center">
+        <div class="bg-primary px-3 py-1 rounded-md text-white font-label-caps text-[10px] whitespace-nowrap flex items-center gap-2">
+          <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+          IDENTIFYING...
+        </div>
+      </div>
+      <!-- ID Label -->
+      <div class="absolute -bottom-16 left-1/2 -translate-x-1/2 glass-pill px-4 py-2 rounded-xl border border-white/20 shadow-lg text-center min-w-[180px]">
+        <p id="face-label-name" class="font-body-sm text-on-background font-bold">Scanning...</p>
+        <p id="face-label-conf" class="text-[10px] text-primary font-bold">0% MATCH</p>
+      </div>
+    </div>
+
+    <!-- Visual Scan-Line Effect -->
+    <div class="absolute inset-0 opacity-10 bg-[linear-gradient(rgba(26,88,183,0)_0%,rgba(26,88,183,0.2)_50%,rgba(26,88,183,0)_100%)] h-full w-full pointer-events-none" style="animation: scan 4s linear infinite;"></div>
+  </div>
+
+  <!-- ── BOTTOM CONTROL PILL ── -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 glass-pill p-2 rounded-full flex items-center gap-2 shadow-2xl border border-white/30 transition-transform group-hover:scale-105">
+
+    <!-- START button (shown when camera is off) -->
+    <button id="start-btn"
+      class="flex items-center gap-2 px-5 py-3 rounded-full bg-success-green text-white font-label-caps text-label-caps shadow-lg hover:opacity-90 active:scale-95 transition-all">
+      <span class="material-symbols-outlined text-sm">play_circle</span>
+      START
+    </button>
+
+    <!-- STOP button (shown when camera is live) -->
+    <button id="stop-btn"
+      class="hidden flex items-center gap-2 px-5 py-3 rounded-full bg-error text-white font-label-caps text-label-caps shadow-lg hover:opacity-90 active:scale-95 transition-all">
+      <span class="material-symbols-outlined text-sm">stop_circle</span>
+      STOP
+    </button>
+
+    <!-- Switch Camera -->
+    <button id="switch-btn"
+      class="flex items-center gap-2 px-6 py-3 rounded-full bg-surface-container-highest/80 hover:bg-surface-container-high active:scale-95 transition-all">
+      <span class="material-symbols-outlined text-primary text-sm">cached</span>
+      <span class="font-label-caps text-label-caps text-on-surface">SWITCH CAMERA</span>
+    </button>
+
+    <!-- Manual Entry -->
+    <button class="flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-white shadow-lg hover:opacity-90 active:scale-95 transition-all">
+      <span class="material-symbols-outlined text-sm">edit_square</span>
+      <span class="font-label-caps text-label-caps">MANUAL ENTRY</span>
+    </button>
+  </div>
+
+</div>
+</section>
+<!-- Sidebar / Insights -->
+<aside class="w-80 flex flex-col gap-6 overflow-y-auto pr-2 custom-scrollbar">
+<!-- Stat Cards -->
+<div class="grid grid-cols-1 gap-4">
+<div class="bg-white p-6 rounded-[24px] shadow-sm border border-outline-variant/20 relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-success-green/5 rounded-full"></div>
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 rounded-full bg-success-green/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-success-green" style="font-variation-settings: 'FILL' 1;">person_check</span>
+</div>
+</div>
+<p id="cap-present" class="text-3xl font-headline-sm font-bold text-on-surface">--</p>
+<p class="text-sm text-on-surface-variant">Present Today</p>
+</div>
+<div class="bg-white p-6 rounded-[24px] shadow-sm border border-outline-variant/20">
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 rounded-full bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">person_off</span>
+</div>
+</div>
+<p id="cap-absent" class="text-3xl font-headline-sm font-bold text-on-surface">--</p>
+<p class="text-sm text-on-surface-variant">Absent Today</p>
+</div>
+</div>
+<!-- Just Marked List -->
+<div class="flex-1 bg-white rounded-[24px] shadow-sm border border-outline-variant/20 flex flex-col overflow-hidden">
+<div class="p-6 border-b border-outline-variant/20 flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-on-surface">JUST MARKED</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">history</span>
+</div>
+<div class="flex-1 overflow-y-auto px-4 py-2 space-y-2">
+<!-- List Item -->
+<div class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer border-b border-outline-variant/10">
+<img class="w-10 h-10 rounded-lg object-cover" data-alt="Modern professional headshot of a young student with glasses, smiling warmly, studio lighting, soft gray background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApbISeYuPt5vVM-48rZQVqWd6H7H6fCEz829lbtyg4y52GICDO0aMBRwb9rv-WBk-IJWHQKIf28Q4gZB7jHSIsWumz4s76wec9AEIdfYN0feqlfsc9EF6_a9UrXiCqZ6qP8XwnzpTFyLWNTMLHYNy7kaqOxZeMjwW7Bxr1O5buBy2YIUFAgkzEqGTvboWMPmaStEEPb0uVpMCnMzZwIYGszCTScXBJ8we2nFAAOR5i6s1du-_zWb439w_2k0Dd3VS0x5MBkXBNJdko"/>
+<div class="flex-1">
+<p class="font-body-sm font-bold text-on-surface">Aditi Sharma</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">SEC B • 10:42 AM</p>
+</div>
+<div class="bg-success-green/10 p-1.5 rounded-full">
+<span class="material-symbols-outlined text-success-green text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer border-b border-outline-variant/10">
+<img class="w-10 h-10 rounded-lg object-cover" data-alt="Portrait of a male college student in a casual hoodie, natural daylight, soft bokeh background, high-end photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB0WoGvUti8O2qdquMWThYP6btFdCJsfF-OGIbdIlGFmCkuY1naVQ6fX124kyd83a3f4gFwtesAR4Pi3pvtq8XcqWiQQWHl69g7B6XEqMi3EkW3yeKNKGT4gFiN0ChTiRZr70TmQwML8p6dsXq1vK62iQXNtZYef4_xku9e5BwFU27lMgGYXRKLCsn0EhV-ORvNsir59WF-C3_iNvhqAnRQQRH-hkCKRu6t_MreBYRDJHlo6Vep_9Z3gW_lVHzXDnd7YruQEBOI086"/>
+<div class="flex-1">
+<p class="font-body-sm font-bold text-on-surface">Rohan Mehta</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">SEC A • 10:41 AM</p>
+</div>
+<div class="bg-success-green/10 p-1.5 rounded-full">
+<span class="material-symbols-outlined text-success-green text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer border-b border-outline-variant/10">
+<img class="w-10 h-10 rounded-lg object-cover" data-alt="Professional profile photo of a woman in business casual attire, neutral expression, clean lighting, corporate minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYWvBzeQczecZRwN_cWxmGx_7kL-0vvUrDNpI_khCecmIvSBxamoDO9raPjoVlE3caxq6_7YvJlpprsdbI6_yJsQfRB1SfOxKDOKyvbFUcprdQcbH3A11cwMdTHId2KZGG2HJ_zIqbar4_LpX3Ab5alqa_n8JNI7JKz8hyTVIGbkHXPDSPXC4oHinP6xq9toJG-pTzTE0-2HGGifbLE0qnxDHPUknG2ct8bH7IfZCYTL3_ow6sGtF1JD5Naecy24yrzHlbPvwlVFe_"/>
+<div class="flex-1">
+<p class="font-body-sm font-bold text-on-surface">Priya Verma</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">STAFF • 10:39 AM</p>
+</div>
+<div class="bg-success-green/10 p-1.5 rounded-full">
+<span class="material-symbols-outlined text-success-green text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer">
+<img class="w-10 h-10 rounded-lg object-cover" data-alt="Close up face of a male student with a backpack, brightly lit library environment in the background, soft focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo2CjJrZJL_nKtW6Ov9B3F8fRGuuup7RMOZZmOjGpgmcKyoucV88q0pKUTNhuExeSrDP1M9OPRL1nOmE-bdcXpOvKF-YegbztZX7s_WRveifi_UtnyIjnfpNNcnuF531577E0N3qchE5iFbfhE1bgEYENNYCuMQlKOVmRK2ClbsexRdOljnJ_5Eu1earPOv6lGuvtVFin186VYAic61Fp9Sp33rx7-JlHyeirJ4FvMIf1YCrn3BUYZ2gTCALikEaTJlyxedGY8-HxH"/>
+<div class="flex-1">
+<p class="font-body-sm font-bold text-on-surface">Leo Dawson</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">SEC C • 10:38 AM</p>
+</div>
+<div class="bg-success-green/10 p-1.5 rounded-full">
+<span class="material-symbols-outlined text-success-green text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+<a href="reports.html" class="m-4 p-3 rounded-xl border border-outline-variant/30 text-[11px] font-label-caps text-on-surface-variant hover:bg-surface-container transition-colors text-center block">
+  VIEW FULL LOG
+</a>
+</div>
+</aside>
+</div>
+</main>
+<style>
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e2e3; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #c3c6d4; }
+
+    /* Mirror webcam so it feels natural (selfie-view); remove if backend needs raw orientation) */
+    #webcam-video { transform: scaleX(-1); }
+
+    /* Smooth visibility transitions */
+    #camera-off-state  { transition: opacity 0.3s ease; }
+    #webcam-video      { transition: opacity 0.3s ease; }
+    #ai-overlays       { transition: opacity 0.3s ease; }
+  </style>
+
+<script>
+  /* ─────────────────────────────────────────────────────────────
+   *  WEBCAM CONTROLLER
+   *  Exposes window.cameraStream so your backend worker can pull
+   *  frames: const track = window.cameraStream.getVideoTracks()[0]
+   * ───────────────────────────────────────────────────────────── */
+  (() => {
+    const video        = document.getElementById('webcam-video');
+    const offState     = document.getElementById('camera-off-state');
+    const aiOverlays   = document.getElementById('ai-overlays');
+    const startBtn     = document.getElementById('start-btn');
+    const startBtnCenter = document.getElementById('start-btn-center');
+    const stopBtn      = document.getElementById('stop-btn');
+    const switchBtn    = document.getElementById('switch-btn');
+    const statusDot    = document.querySelector('.live-dot');
+    const statusLabel  = document.querySelector('.live-dot + span');
+
+    // Track state
+    let currentStream  = null;
+    let facingMode     = 'user';   // 'user' = front cam, 'environment' = rear
+    let cameraIndex    = 0;        // cycles through available video devices
+    let deviceIds      = [];
+
+    // ── enumerate devices once so Switch Camera works ──
+    async function loadDeviceIds() {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        deviceIds = devices
+          .filter(d => d.kind === 'videoinput')
+          .map(d => d.deviceId);
+      } catch (_) { deviceIds = []; }
+    }
+
+    // ── start / restart the stream ──
+    async function startCamera(deviceId) {
+      try {
+        // Stop any existing stream first
+        if (currentStream) stopStream();
+
+        const constraints = {
+          video: deviceId
+            ? { deviceId: { exact: deviceId }, width: { ideal: 1920 }, height: { ideal: 1080 } }
+            : { facingMode, width: { ideal: 1920 }, height: { ideal: 1080 } },
+          audio: false
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        currentStream = stream;
+        window.cameraStream = stream;   // expose for backend integration
+
+        video.srcObject = stream;
+        await video.play();
+
+        // Update UI → live state
+        offState.classList.add('hidden');
+        video.classList.remove('hidden');
+        aiOverlays.classList.remove('hidden');
+        startBtn.classList.add('hidden');
+        stopBtn.classList.remove('hidden');
+        stopBtn.classList.add('flex');
+
+        // Update status pill
+        const pill = document.getElementById('cam-status-pill');
+        const pillLabel = document.getElementById('cam-status-label');
+        if (pill) {
+          pill.className = 'bg-success-green/10 text-success-green px-4 py-1.5 rounded-full flex items-center gap-2 border border-success-green/20';
+          pill.querySelector('span').className = 'w-2 h-2 rounded-full bg-success-green live-dot';
+        }
+        if (pillLabel) pillLabel.textContent = 'CAMERA: LIVE';
+
+        // Re-enumerate after permission grant (deviceIds may now have labels)
+        await loadDeviceIds();
+
+      } catch (err) {
+        console.error('[Camera] getUserMedia error:', err);
+        showError(err);
+      }
+    }
+
+    // ── stop the stream ──
+    function stopStream() {
+      if (currentStream) {
+        currentStream.getTracks().forEach(t => t.stop());
+        currentStream = null;
+        window.cameraStream = null;
+      }
+      video.srcObject = null;
+      video.classList.add('hidden');
+      aiOverlays.classList.add('hidden');
+      offState.classList.remove('hidden');
+      startBtn.classList.remove('hidden');
+      stopBtn.classList.add('hidden');
+      stopBtn.classList.remove('flex');
+
+      // Update status pill
+      const pill = document.getElementById('cam-status-pill');
+      const pillLabel = document.getElementById('cam-status-label');
+      if (pill) {
+        pill.className = 'bg-error/20 text-error px-4 py-1.5 rounded-full flex items-center gap-2 border border-error/20';
+        const dot = pill.querySelector('span');
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-error';
+      }
+      if (pillLabel) pillLabel.textContent = 'CAMERA: OFF';
+    }
+
+    // ── cycle to next camera device ──
+    async function switchCamera() {
+      if (deviceIds.length <= 1) {
+        // Mobile fallback: toggle facingMode
+        facingMode = facingMode === 'user' ? 'environment' : 'user';
+        await startCamera();
+        return;
+      }
+      cameraIndex = (cameraIndex + 1) % deviceIds.length;
+      await startCamera(deviceIds[cameraIndex]);
+    }
+
+    // ── permission / device error UI ──
+    function showError(err) {
+      const msg = err.name === 'NotAllowedError'
+        ? 'Camera permission denied. Please allow access in your browser settings.'
+        : err.name === 'NotFoundError'
+        ? 'No camera device found.'
+        : `Camera error: ${err.message}`;
+
+      // Temporarily replace placeholder text
+      const label = offState.querySelector('p');
+      if (label) {
+        const prev = label.textContent;
+        label.textContent = msg;
+        label.style.color = '#ba1a1a';
+        setTimeout(() => { label.textContent = prev; label.style.color = ''; }, 5000);
+      }
+    }
+
+    // ── wire buttons ──
+    startBtn.addEventListener('click', () => startCamera());
+    startBtnCenter.addEventListener('click', () => startCamera());
+    stopBtn.addEventListener('click', stopStream);
+    switchBtn.addEventListener('click', switchCamera);
+
+    // ── micro-interactions (kept from original) ──
+    document.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+      btn.addEventListener('mouseup',   () => btn.classList.remove('scale-95'));
+      btn.addEventListener('mouseleave',() => btn.classList.remove('scale-95'));
+    });
+
+    // ── backend face recognition polling ──
+    let recognitionInterval = null;
+    let isProcessing = false;
+
+    async function processFrame() {
+      if (!currentStream || isProcessing) return;
+      isProcessing = true;
+      
+      try {
+        const track = currentStream.getVideoTracks()[0];
+        // Note: ImageCapture is not supported in all browsers (like Safari/Firefox by default)
+        // A fallback would be drawing the video to a canvas and calling toBlob(), 
+        // but we'll use standard canvas fallback here to be safe and widely supported.
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+        
+        const formData = new FormData();
+        formData.append('frame', blob, 'frame.jpg');
+
+        const response = await fetch((typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8000') + '/recognize', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (!response.ok) throw new Error('API error');
+        const data = await response.json();
+        
+        const labelName = document.getElementById('face-label-name');
+        const labelConf = document.getElementById('face-label-conf');
+        const box = document.querySelector('.face-scanner-box');
+        const statusPill = box ? box.querySelector('[class*="bg-primary"], [class*="bg-error"]') : null;
+
+        if (box && data.matched) {
+          // Update bounding box
+          labelName.textContent = data.student.name;
+          labelConf.textContent = `${data.student.confidence}% MATCH`;
+          
+          if (statusPill) {
+            statusPill.className = 'bg-primary px-3 py-1 rounded-md text-white font-label-caps text-[10px] whitespace-nowrap flex items-center gap-2';
+            statusPill.innerHTML = `<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">verified</span> IDENTIFIED`;
+          }
+          
+          // Jitter box slightly to simulate live tracking
+          box.style.transition = 'all 0.5s ease-in-out';
+          box.style.transform  = `translate(${Math.random()*20-10}px, ${Math.random()*20-10}px)`;
+
+          // Add to Just Marked list if newly marked
+          if (data.newly_marked) {
+            const listContainer = document.querySelector('.flex-1.overflow-y-auto');
+            if (listContainer) {
+              const now = new Date();
+              const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+              const newItem = document.createElement('div');
+              newItem.className = 'flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer border-b border-outline-variant/10';
+              newItem.innerHTML = `
+                <div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary font-bold">
+                  ${data.student.name.charAt(0)}
+                </div>
+                <div class="flex-1">
+                  <p class="font-body-sm font-bold text-on-surface">${data.student.name}</p>
+                  <p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">${data.student.department} • ${timeStr}</p>
+                </div>
+                <div class="bg-success-green/10 p-1.5 rounded-full">
+                  <span class="material-symbols-outlined text-success-green text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                </div>
+              `;
+              listContainer.prepend(newItem);
+            }
+          }
+        } else if (box && !data.matched) {
+          labelName.textContent = "Unrecognized";
+          labelConf.textContent = "0% MATCH";
+          if (statusPill) {
+            statusPill.className = 'bg-error px-3 py-1 rounded-md text-white font-label-caps text-[10px] whitespace-nowrap flex items-center gap-2';
+            statusPill.innerHTML = `<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">warning</span> SCANNING...`;
+          }
+        }
+      } catch (err) {
+        console.error("Frame processing error:", err);
+      } finally {
+        isProcessing = false;
+      }
+    }
+
+    // Start interval when stream starts, clear when it stops
+    const originalStart = startCamera;
+    const originalStop = stopStream;
+    
+    startCamera = async (deviceId) => {
+      await originalStart(deviceId);
+      if (recognitionInterval) clearInterval(recognitionInterval);
+      recognitionInterval = setInterval(processFrame, 2000);
+    };
+
+    stopStream = () => {
+      originalStop();
+      if (recognitionInterval) clearInterval(recognitionInterval);
+      recognitionInterval = null;
+    };
+    // Pre-load device list (may be empty until permission granted)
+    loadDeviceIds();
+  })();
+</script>
+
+<script>
+  (async () => {
+    const API_BASE = (typeof API_BASE_URL !== "undefined") ? API_BASE_URL : "http://localhost:8000";
+    try {
+      const res = await fetch(API_BASE + "/dashboard/stats");
+      const data = await res.json();
+      document.getElementById('cap-present').textContent = data.present_today;
+      document.getElementById('cap-absent').textContent = data.absent_today;
+    } catch (err) {
+      console.error('Failed to load dashboard stats:', err);
+    }
+    try {
+      const res2 = await fetch(API_BASE + "/attendance/today");
+      const records = await res2.json();
+      const list = document.querySelector('.flex-1.overflow-y-auto');
+      if (list) {
+        list.innerHTML = '';
+        if (records.length === 0) {
+          list.innerHTML = '<p class="text-center text-on-surface-variant text-body-sm py-8">No check-ins yet today.</p>';
+        } else {
+          records.slice(0, 10).forEach(r => {
+            const time = new Date(r.timestamp).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+            const initials = r.name.split(' ').map(p => p[0]).join('').toUpperCase().slice(0, 2);
+            const item = document.createElement('div');
+            item.className = 'flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer border-b border-outline-variant/10';
+            item.innerHTML = '<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary font-bold">' + initials + '</div>' +
+              '<div class="flex-1"><p class="font-body-sm font-bold text-on-surface">' + r.name + '</p>' +
+              '<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">' + (r.department || '') + ' • ' + time + '</p></div>' +
+              '<div class="bg-success-green/10 p-1.5 rounded-full"><span class="material-symbols-outlined text-success-green text-[16px]" style="font-variation-settings: \'FILL\' 1;">check_circle</span></div>';
+            list.appendChild(item);
+          });
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load attendance log:', err);
+    }
+  })();
+</script>
+</body></html>
